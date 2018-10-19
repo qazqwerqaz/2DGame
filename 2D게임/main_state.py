@@ -16,6 +16,16 @@ grass = None
 font = None
 
 
+def draw_Map(image, map_x, map_y, Map_type):
+    x, y = 0, 0
+    type = Map_type
+    while type >= 16:
+        type = type - 16
+        y += 1
+    while type > 1:
+        type = type - 1
+        x += 1
+    image.clip_draw(x * 20, y * 20, 20, 20, map_x * 20, map_y * 20)
 
 class Grass:
     def __init__(self):
@@ -27,9 +37,7 @@ class Grass:
         map_x, map_y = 0, 0
         for i in self.line:
             for j in i:
-                if j == 0:
-                    self.image.clip_draw(10 * 20, 1 * 20, 20, 20, map_x * 20, map_y * 20)
-
+                draw_Map(self.image, map_x, map_y, j)
                 map_x = map_x + 1
             map_x = 0
             map_y = map_y +1
