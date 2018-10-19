@@ -7,7 +7,7 @@ from pico2d import *
 import game_framework
 import title_state
 import pause_state
-
+import numpy as np
 
 name = "MainState"
 
@@ -21,12 +21,15 @@ class Grass:
     def __init__(self):
         self.image = load_image('Mdesert.png')
         self.Map = [[0]*41 for i in range(31)]
-
+        with open('Map.txt', 'r') as self.file:
+            self.line = np.loadtxt('Map.txt', delimiter=' ')
     def draw(self):
         map_x, map_y = 0, 0
-        for i in self.Map:
+        for i in self.line:
             for j in i:
-                self.image.clip_draw(10*20,  1*20, 20, 20, map_x*20, map_y*20)
+                if j == 0:
+                    self.image.clip_draw(10 * 20, 1 * 20, 20, 20, map_x * 20, map_y * 20)
+
                 map_x = map_x + 1
             map_x = 0
             map_y = map_y +1
