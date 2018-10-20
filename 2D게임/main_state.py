@@ -60,9 +60,8 @@ class Boy:
         self.mouse_x = 0
         self.mouse_y = 0
         self.degreeAT = 0
+
     def update(self):
-
-
         if self.moveRatio <= self.total_moveRatio:
             self.moveRatio += 1
             t = self.moveRatio / self.total_moveRatio
@@ -78,7 +77,6 @@ def enter():
     boy = Boy()
     boy1 = Boy()
     grass = Grass()
-    pass
 
 
 def exit():
