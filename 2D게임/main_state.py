@@ -8,12 +8,15 @@ import game_framework
 import title_state
 import pause_state
 import numpy as np
+import math
 
 name = "MainState"
 
 boy = None
+boy1 = None
 grass = None
 font = None
+
 
 
 def draw_Map(image, map_x, map_y, Map_type):
@@ -30,7 +33,6 @@ def draw_Map(image, map_x, map_y, Map_type):
 class Grass:
     def __init__(self):
         self.image = load_image('Mdesert.png')
-        self.Map = [[0]*41 for i in range(31)]
         with open('Map.txt', 'r') as self.file:
             self.line = np.loadtxt('Map.txt', delimiter=' ')
     def draw(self):
@@ -47,33 +49,42 @@ class Grass:
 
 class Boy:
     def __init__(self):
-        self.x, self.y = 0, 90
+        self.x, self.y = 500, 300
         self.frame = 0
-        self.image = load_image('run_animation.png')
-        self.dir = 1
-
+        self.image = load_image('actorTop.png')
+        self.move = 0
+        self.moveRatio = 0
+        self.total_moveRatio = 1
+        self.start_x = 0
+        self.start_y = 0
+        self.mouse_x = 0
+        self.mouse_y = 0
+        self.degreeAT = 0
     def update(self):
-        self.frame = (self.frame + 1) % 8
-        self.x += self.dir
-        if self.x >= 800:
-            self.dir = -1
-        elif self.x <= 0:
-            self.dir = 1
+
+
+        if self.moveRatio <= self.total_moveRatio:
+            self.moveRatio += 1
+            t = self.moveRatio / self.total_moveRatio
+            self.x = (1-t)*self.start_x + t*self.mouse_x
+            self.y = (1-t)*self.start_y + t*self.mouse_y
 
     def draw(self):
-        self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+        self.image.rotate_draw(self.degreeAT ,self.x, self.y)
 
 
 def enter():
-    global boy, grass
+    global boy, boy1, grass
     boy = Boy()
+    boy1 = Boy()
     grass = Grass()
     pass
 
 
 def exit():
-    global boy, grass
+    global boy, boy1, grass
     del(boy)
+    del(boy1)
     del(grass)
     pass
 
@@ -93,13 +104,39 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
-            game_framework.push_state(pause_state)
+        elif event.type == SDL_KEYDOWN:
+            if event.key == SDLK_p:
+                game_framework.push_state(pause_state)
+            elif event.key == SDLK_1:
+                boy.move = 1
+                boy1.move = 0
+            elif event.key == SDLK_2:
+                boy.move = 0
+                boy1.move = 1
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == SDL_BUTTON_RIGHT:
+                if boy.move == 0:
+                    boy.mouse_x, boy.mouse_y = event.x, 600 - event.y
+                    boy.start_x, boy.start_y = boy.x, boy.y
+                    boy.total_moveRatio = math.sqrt((( boy.mouse_x - boy.start_x) ** 2 + (boy.mouse_y - boy.start_y) ** 2))
+                    boy.moveRatio = 0
+                elif boy1.move == 0:
+                    boy1.mouse_x, boy1.mouse_y = event.x, 600 - event.y
+                    boy1.start_x, boy1.start_y = boy1.x, boy1.y
+                    boy1.total_moveRatio = math.sqrt(((boy1.mouse_x - boy1.start_x) ** 2 + (boy1.mouse_y - boy1.start_y) ** 2))
+                    boy1.moveRatio = 0
+        elif event.type == SDL_MOUSEMOTION:
+            if boy.move == 0:
+                boy.degreeAT = math.atan2(boy.y - event.y, boy.x - event.x)
+            elif boy1.move == 0:
+                boy1.degreeAT = math.atan2(boy1.y - event.y, boy1.x - event.x)
     pass
+
 
 
 def update():
     boy.update()
+    boy1.update()
     pass
 
 
@@ -107,6 +144,7 @@ def draw():
     clear_canvas()
     grass.draw()
     boy.draw()
+    boy1.draw()
     update_canvas()
     pass
 
