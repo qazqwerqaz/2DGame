@@ -127,9 +127,9 @@ def handle_events():
                     boy1.moveRatio = 0
         elif event.type == SDL_MOUSEMOTION:
             if boy.move == 0:
-                boy.degreeAT = math.atan2(boy.y - event.y, boy.x - event.x)
+                boy.degreeAT = math.atan2(600 - event.y - boy.y, event.x - boy.x)
             elif boy1.move == 0:
-                boy1.degreeAT = math.atan2(boy1.y - event.y, boy1.x - event.x)
+                boy1.degreeAT = math.atan2(600 - event.y - boy1.y, event.x - boy1.x)
     pass
 
 
