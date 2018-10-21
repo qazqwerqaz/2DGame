@@ -31,7 +31,7 @@ def handle_events():
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
             elif event.type == SDL_MOUSEBUTTONDOWN:
-                if (mouse_x > 300 and mouse_x > 400 and mouse_y > 250 and mouse_y < 400):
+                if (mouse_x > 500 and mouse_x > 600 and mouse_y > 250 and mouse_y < 400):
                     game_framework.change_state(main_state)
             elif event.type == SDL_MOUSEMOTION:
                 mouse_x, mouse_y = event.x, event.y
@@ -41,7 +41,7 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    image.draw(400, 300)
+    image.draw(500, 300)
     update()
     update_canvas()
     pass
@@ -49,9 +49,9 @@ def draw():
 
 def update():
     global image
-    if (mouse_x > 300 and mouse_x > 400 and mouse_y > 250 and mouse_y < 400):
+    if (mouse_x > 500 and mouse_x > 600 and mouse_y > 250 and mouse_y < 400):
         image = load_image('title_start.png')
-    elif(mouse_x > 300 and mouse_x > 400 and mouse_y > 450 and mouse_y < 600):
+    elif(mouse_x > 500 and mouse_x > 600 and mouse_y > 450 and mouse_y < 600):
         image = load_image('title_maptool.png')
     else:
         image = load_image('title.png')

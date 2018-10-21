@@ -9,6 +9,7 @@ import title_state
 import pause_state
 import numpy as np
 import math
+import inventory
 
 name = "MainState"
 
@@ -16,10 +17,11 @@ boy = None
 boy1 = None
 grass = None
 font = None
-
+inven = None
 
 
 def draw_Map(image, map_x, map_y, Map_type):
+
     x, y = 0, 0
     type = Map_type
     while type >= 16:
@@ -64,19 +66,29 @@ class Boy:
     def update(self):
         if self.moveRatio <= self.total_moveRatio:
             self.moveRatio += 1
+
             t = self.moveRatio / self.total_moveRatio
             self.x = (1-t)*self.start_x + t*self.mouse_x
             self.y = (1-t)*self.start_y + t*self.mouse_y
+            a = int(self.x) // 20 + 1
+            b = int(self.y) // 20 + 1
+            if grass.line[int(b)][int(a)] == 31:
+                self.moveRatio -= 2
+
+
+
 
     def draw(self):
-        self.image.rotate_draw(self.degreeAT ,self.x, self.y)
+        self.image.rotate_draw(self.degreeAT, self.x, self.y)
 
 
 def enter():
-    global boy, boy1, grass
+    global boy, boy1, grass, inven
+    grass = Grass()
     boy = Boy()
     boy1 = Boy()
-    grass = Grass()
+    inven = inventory.data()
+
 
 
 def exit():
@@ -84,7 +96,6 @@ def exit():
     del(boy)
     del(boy1)
     del(grass)
-    pass
 
 
 def pause():
@@ -135,6 +146,7 @@ def handle_events():
 def update():
     boy.update()
     boy1.update()
+    inven.update()
     pass
 
 
@@ -143,6 +155,7 @@ def draw():
     grass.draw()
     boy.draw()
     boy1.draw()
+    inven.draw()
     update_canvas()
     pass
 
