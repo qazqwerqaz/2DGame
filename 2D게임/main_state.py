@@ -24,7 +24,7 @@ def draw_Map(image, map_x, map_y, Map_type):
 
     x, y = 0, 0
     type = Map_type
-    while type >= 16:
+    while type > 16:
         type = type - 16
         y += 1
     while type > 1:
@@ -54,6 +54,7 @@ class Boy:
         self.x, self.y = 500, 300
         self.frame = 0
         self.image = load_image('actorTop.png')
+        self.imageW = load_image('actorW.png')
         self.move = 0
         self.moveRatio = 0
         self.total_moveRatio = 1
@@ -62,7 +63,7 @@ class Boy:
         self.mouse_x = 0
         self.mouse_y = 0
         self.degreeAT = 0
-
+        self.state = 0
     def update(self):
         if self.moveRatio <= self.total_moveRatio:
             self.moveRatio += 1
@@ -73,6 +74,12 @@ class Boy:
             a = int(self.x) // 20 + 1
             b = int(self.y) // 20 + 1
             if grass.line[int(b)][int(a)] == 31:
+                self.moveRatio -= 2
+            elif grass.line[int(b)][int(a)] == 115 or grass.line[int(b)][int(a)] == 114:
+                self.state = 0
+                self.moveRatio -= 2
+            elif grass.line[int(b)][int(a)] == 85:
+                self.state = 1
                 self.moveRatio -= 2
 
 
@@ -87,7 +94,7 @@ def enter():
     grass = Grass()
     boy = Boy()
     boy1 = Boy()
-    inven = inventory.data()
+    inven = inventory.Data()
 
 
 
