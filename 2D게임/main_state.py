@@ -7,10 +7,9 @@ from pico2d import *
 import game_framework
 import title_state
 import pause_state
-import numpy as np
 import math
 import inventory
-
+import Map
 name = "MainState"
 
 boy = None
@@ -18,35 +17,15 @@ boy1 = None
 grass = None
 font = None
 inven = None
+grass = None
 
-
-def draw_Map(image, map_x, map_y, Map_type):
-
-    x, y = 0, 0
-    type = Map_type
-    while type > 16:
-        type = type - 16
-        y += 1
-    while type > 1:
-        type = type - 1
-        x += 1
-    image.clip_draw(x * 20, y * 20, 20, 20, map_x * 20, map_y * 20)
-
-class Grass:
-    def __init__(self):
-        self.image = load_image('Mdesert.png')
-        with open('Map.txt', 'r') as self.file:
-            self.line = np.loadtxt('Map.txt', delimiter=' ')
-    def draw(self):
-        map_x, map_y = 0, 0
-        for i in self.line:
-            for j in i:
-                draw_Map(self.image, map_x, map_y, j)
-                map_x = map_x + 1
-            map_x = 0
-            map_y = map_y +1
-
-
+RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP = range(4)
+key_event_table = {
+    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): RIGHT_BUTTON_DOWN,
+    (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): LEFT_BUTTON_DOWN,
+    (SDL_MOUSEBUTTONDOWN, SDLK_RIGHT): RIGHT_BUTTON_UP,
+    (SDL_MOUSEBUTTONDOWN, SDLK_LEFT): LEFT_BUTTON_UP
+}
 
 
 class Boy:
@@ -67,23 +46,20 @@ class Boy:
     def update(self):
         if self.moveRatio <= self.total_moveRatio:
             self.moveRatio += 1
-
+            self.state = 0
             t = self.moveRatio / self.total_moveRatio
             self.x = (1-t)*self.start_x + t*self.mouse_x
             self.y = (1-t)*self.start_y + t*self.mouse_y
             a = int(self.x) // 20 + 1
             b = int(self.y) // 20 + 1
             if grass.line[int(b)][int(a)] == 31:
-                self.moveRatio -= 2
+                self.moveRatio -= 1
             elif grass.line[int(b)][int(a)] == 115 or grass.line[int(b)][int(a)] == 114:
-                self.state = 0
-                self.moveRatio -= 2
-            elif grass.line[int(b)][int(a)] == 85:
                 self.state = 1
-                self.moveRatio -= 2
-
-
-
+                self.moveRatio -= 1
+            elif grass.line[int(b)][int(a)] == 85:
+                self.state = 2
+                self.moveRatio -= 1
 
     def draw(self):
         self.image.rotate_draw(self.degreeAT, self.x, self.y)
@@ -91,11 +67,10 @@ class Boy:
 
 def enter():
     global boy, boy1, grass, inven
-    grass = Grass()
+    grass = Map.Grass()
     boy = Boy()
     boy1 = Boy()
     inven = inventory.Data()
-
 
 
 def exit():
@@ -134,12 +109,12 @@ def handle_events():
                 if boy.move == 0:
                     boy.mouse_x, boy.mouse_y = event.x, 600 - event.y
                     boy.start_x, boy.start_y = boy.x, boy.y
-                    boy.total_moveRatio = math.sqrt((( boy.mouse_x - boy.start_x) ** 2 + (boy.mouse_y - boy.start_y) ** 2))
+                    boy.total_moveRatio = math.sqrt((( boy.mouse_x - boy.start_x) ** 2 + (boy.mouse_y - boy.start_y) ** 2))/5
                     boy.moveRatio = 0
                 elif boy1.move == 0:
                     boy1.mouse_x, boy1.mouse_y = event.x, 600 - event.y
                     boy1.start_x, boy1.start_y = boy1.x, boy1.y
-                    boy1.total_moveRatio = math.sqrt(((boy1.mouse_x - boy1.start_x) ** 2 + (boy1.mouse_y - boy1.start_y) ** 2))
+                    boy1.total_moveRatio = math.sqrt(((boy1.mouse_x - boy1.start_x) ** 2 + (boy1.mouse_y - boy1.start_y) ** 2))/5
                     boy1.moveRatio = 0
         elif event.type == SDL_MOUSEMOTION:
             if boy.move == 0:
