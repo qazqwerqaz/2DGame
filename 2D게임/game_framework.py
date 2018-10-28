@@ -1,3 +1,6 @@
+import time
+
+
 class GameState:
     def __init__(self, state):
         self.enter = state.enter
@@ -7,7 +10,6 @@ class GameState:
         self.handle_events = state.handle_events
         self.update = state.update
         self.draw = state.draw
-
 
 
 class TestGameState:
@@ -37,7 +39,6 @@ class TestGameState:
         print("State [%s] draw" % self.name)
 
 
-
 running = None
 stack = None
 
@@ -62,7 +63,6 @@ def push_state(state):
     state.enter()
 
 
-
 def pop_state():
     global stack
     if (len(stack) > 0):
@@ -76,7 +76,6 @@ def pop_state():
         stack[-1].resume()
 
 
-
 def quit():
     global running
     running = False
@@ -87,10 +86,15 @@ def run(start_state):
     running = True
     stack = [start_state]
     start_state.enter()
+
+    cur_time = 0.0
     while (running):
+        runTime = time.time()
         stack[-1].handle_events()
-        stack[-1].update()
-        stack[-1].draw()
+        if runTime - cur_time >= 0.05:
+            stack[-1].update()
+            cur_time = runTime
+            stack[-1].draw()
     # repeatedly delete the top of the stack
     while (len(stack) > 0):
         stack[-1].exit()
