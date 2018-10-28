@@ -27,3 +27,6 @@ class Grass:
             map_x = 0
             map_y = map_y +1
 
+    def update(self):
+        pass
+
