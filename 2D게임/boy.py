@@ -2,15 +2,15 @@ from pico2d import *
 from ball import Ball
 
 import game_world
-
+import math
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE, SHIFT_DOWN, SHIFT_UP = range(8)
+RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP, SLEEP_TIMER, SPACE, SHIFT_DOWN, SHIFT_UP = range(8)
 
 key_event_table = {
-    (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
-    (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
-    (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
-    (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
+    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): RIGHT_BUTTON_DOWN,
+    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): LEFT_BUTTON_DOWN,
+    (SDL_MOUSEBUTTONUP, SDLK_RIGHT): RIGHT_BUTTON_UP,
+    (SDL_MOUSEBUTTONUP, SDLK_LEFT): LEFT_BUTTON_UP,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE,
     (SDL_KEYDOWN, SDLK_LSHIFT): SHIFT_DOWN,
     (SDL_KEYUP, SDLK_LSHIFT): SHIFT_UP,
@@ -26,15 +26,8 @@ class IdleState:
 
     @staticmethod
     def enter(boy, event):
-        if event == RIGHT_DOWN:
-            boy.velocity += 1
-        elif event == LEFT_DOWN:
-            boy.velocity -= 1
-        elif event == RIGHT_UP:
-            boy.velocity -= 1
-        elif event == LEFT_UP:
-            boy.velocity += 1
-        boy.timer = 300
+        boy.t = 0
+        pass
 
     @staticmethod
     def exit(boy, event):
@@ -45,33 +38,19 @@ class IdleState:
 
     @staticmethod
     def do(boy):
-        boy.frame = (boy.frame + 1) % 8
-        # fill here
-        boy.timer -= 1
-        if boy.timer == 0:
-            boy.add_event(SLEEP_TIMER)
+        boy.degreeAT = math.atan2(boy.y - boy.mouse_y, boy.x - boy.mouse_x)
 
     @staticmethod
     def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(boy.frame * 100, 300, 100, 100, boy.x, boy.y)
-        else:
-            boy.image.clip_draw(boy.frame * 100, 200, 100, 100, boy.x, boy.y)
+        boy.image.rotate_draw(boy.degreeAT + 3.14, boy.x, boy.y)
 
 
 class RunState:
 
     @staticmethod
     def enter(boy, event):
-        if event == RIGHT_DOWN:
-            boy.velocity += 1
-        elif event == LEFT_DOWN:
-            boy.velocity -= 1
-        elif event == RIGHT_UP:
-            boy.velocity -= 1
-        elif event == LEFT_UP:
-            boy.velocity += 1
-        boy.dir = boy.velocity
+
+        pass
 
     @staticmethod
     def exit(boy, event):
@@ -82,17 +61,15 @@ class RunState:
 
     @staticmethod
     def do(boy):
-        boy.frame = (boy.frame + 1) % 8
-        boy.timer -= 1
-        boy.x += boy.velocity
-        boy.x = clamp(25, boy.x, 1600 - 25)
+        boy.t += 1
+        boy.x = (1 - boy.t) * boy.start_x + boy.t * boy.mouse_x
+        boy.y = (1 - boy.t) * boy.start_y + boy.t * boy.mouse_y
+        if boy.t == 50:
+            boy.add_event(RIGHT_BUTTON_UP)
 
     @staticmethod
     def draw(boy):
-        if boy.velocity == 1:
-            boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
-        else:
-            boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
+        boy.image.rotate_draw(boy.degreeAT + 3.14, boy.x, boy.y)
 
 
 class DashState:
@@ -154,20 +131,20 @@ class SleepState:
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState,
-                RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
+    IdleState: {RIGHT_BUTTON_UP: RunState, LEFT_BUTTON_UP: RunState,
+                RIGHT_BUTTON_DOWN: RunState, LEFT_BUTTON_DOWN: RunState,
                 SLEEP_TIMER: SleepState, SPACE: IdleState,
                 SHIFT_DOWN: IdleState, SHIFT_UP: IdleState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState,
-               LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
+    RunState: {RIGHT_BUTTON_UP: RunState, LEFT_BUTTON_UP: RunState,
+               LEFT_BUTTON_DOWN: RunState, RIGHT_BUTTON_DOWN: RunState,
                SPACE: RunState, SHIFT_DOWN: DashState,  SHIFT_UP: RunState},
-    SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState,
-                 LEFT_UP: RunState, RIGHT_UP: RunState,
+    SleepState: {LEFT_BUTTON_DOWN: RunState, RIGHT_BUTTON_DOWN: RunState,
+                 LEFT_BUTTON_UP: RunState, RIGHT_BUTTON_UP: RunState,
                  SPACE: IdleState, SHIFT_DOWN: IdleState,  SHIFT_UP: IdleState},
 
     DashState: {SHIFT_DOWN: DashState,  SHIFT_UP: RunState,
-                RIGHT_UP:IdleState, LEFT_UP: IdleState,
-                RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState,
+                RIGHT_BUTTON_UP:IdleState, LEFT_BUTTON_UP: IdleState,
+                RIGHT_BUTTON_DOWN: IdleState, LEFT_BUTTON_DOWN: IdleState,
                 }
 }
 
@@ -175,11 +152,17 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 1600 // 2, 90
-        self.image = load_image('animation_sheet.png')
+        self.image = load_image('actorTop.png')
         self.dir = 1
         self.velocity = 0
         self.frame = 0
         self.timer = 0
+        self.degreeAT = 0
+        self.mouse_x = 0
+        self.mouse_y = 0
+        self.start_x = 0
+        self.start_y = 0
+        self.t = 0;
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -209,6 +192,11 @@ class Boy:
 
 
     def handle_event(self, event):
+        if event.type == SDL_MOUSEMOTION or event.type == SDL_MOUSEBUTTONUP:
+            self.mouse_x, self.mouse_y = event.x, 600 - event.y
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            self.start_x, self.start_y = self.x, self.y
+
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
