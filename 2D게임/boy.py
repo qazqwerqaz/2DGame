@@ -10,7 +10,6 @@ RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP, SLEEP_TIME
 key_event_table = {
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): RIGHT_BUTTON_DOWN,
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): LEFT_BUTTON_DOWN,
-
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): RIGHT_BUTTON_UP,
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT): LEFT_BUTTON_UP,
     (SDL_KEYDOWN, SDLK_SPACE): TMP,
@@ -58,6 +57,7 @@ class RunState:
 
     @staticmethod
     def exit(boy, event):
+
         boy.start_x, boy.start_y = boy.x, boy.y
         # fill here
         if event == TMP:
@@ -155,8 +155,7 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 1600 // 2, 90
-        self.image = load_image('actorTop.png')
-        self.dir = 1
+        self.image = load_image('actorTop1.png')
         self.velocity = 0
         self.frame = 0
         self.timer = 0
@@ -176,7 +175,7 @@ class Boy:
 
     def fire_ball(self):
         # fill here
-        ball = Ball(self.x, self.y, self.dir*3)
+        ball = Ball(self.x, self.y, 1)
         game_world.add_object(ball,1)
         pass
 
@@ -196,13 +195,15 @@ class Boy:
     def draw(self):
         self.cur_state.draw(self)
 
-
     def handle_event(self, event):
 
         if event.type == SDL_MOUSEBUTTONDOWN:
+            self.t = 0
+            self.start_x, self.start_y = self.x, self.y
             self.move_mouse_x, self.move_mouse_y = event.x, 600 - event.y
             self.total_moveRatio = math.sqrt(((self.move_mouse_x - self.start_x) ** 2 +
                                               (self.move_mouse_y - self.start_y) ** 2))/10
+
         if event.type == SDL_MOUSEMOTION:
             self.view_mouse_x, self.view_mouse_y = event.x, 600 - event.y
 
