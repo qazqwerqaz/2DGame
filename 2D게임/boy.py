@@ -4,11 +4,13 @@ from ball import Ball
 import game_world
 import math
 # Boy Event
+
 RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP, SLEEP_TIMER, TMP, SHIFT_DOWN, SHIFT_UP = range(8)
 
 key_event_table = {
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): RIGHT_BUTTON_DOWN,
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): LEFT_BUTTON_DOWN,
+
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): RIGHT_BUTTON_UP,
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT): LEFT_BUTTON_UP,
     (SDL_KEYDOWN, SDLK_SPACE): TMP,
@@ -27,6 +29,7 @@ class IdleState:
     @staticmethod
     def enter(boy, event):
         boy.t = 0
+        boy.start_x, boy.start_y = boy.x, boy.y
         pass
 
     @staticmethod
@@ -38,7 +41,7 @@ class IdleState:
 
     @staticmethod
     def do(boy):
-        boy.degreeAT = math.atan2(boy.y - boy.mouse_y, boy.x - boy.mouse_x)
+        boy.degreeAT = math.atan2(boy.y - boy.view_mouse_y, boy.x - boy.view_mouse_x)
 
     @staticmethod
     def draw(boy):
@@ -50,10 +53,12 @@ class RunState:
     @staticmethod
     def enter(boy, event):
         boy.t = 0
+        boy.start_x, boy.start_y = boy.x, boy.y
         pass
 
     @staticmethod
     def exit(boy, event):
+        boy.start_x, boy.start_y = boy.x, boy.y
         # fill here
         if event == TMP:
             boy.fire_ball()
@@ -61,12 +66,12 @@ class RunState:
 
     @staticmethod
     def do(boy):
-        boy.degreeAT = math.atan2(boy.y - boy.mouse_y, boy.x - boy.mouse_x)
+        boy.degreeAT = math.atan2(boy.y - boy.view_mouse_y, boy.x - boy.view_mouse_x)
         boy.t += 1
         a = boy.t / boy.total_moveRatio
-        boy.x = (1 - a) * boy.start_x + a * boy.mouse_x
-        boy.y = (1 - a) * boy.start_y + a * boy.mouse_y
-        if boy.t == boy.total_moveRatio:
+        boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
+        boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
+        if boy.t >= boy.total_moveRatio:
             boy.add_event(TMP)
 
     @staticmethod
@@ -130,9 +135,11 @@ next_state_table = {
                 RIGHT_BUTTON_DOWN: RunState, LEFT_BUTTON_DOWN: RunState,
                 SLEEP_TIMER: SleepState, TMP: IdleState,
                 SHIFT_DOWN: IdleState, SHIFT_UP: IdleState},
+
     RunState: {RIGHT_BUTTON_UP: RunState, LEFT_BUTTON_UP: RunState,
                LEFT_BUTTON_DOWN: RunState, RIGHT_BUTTON_DOWN: RunState,
                TMP: IdleState, SHIFT_DOWN: DashState,  SHIFT_UP: RunState},
+
     SleepState: {LEFT_BUTTON_DOWN: RunState, RIGHT_BUTTON_DOWN: RunState,
                  LEFT_BUTTON_UP: RunState, RIGHT_BUTTON_UP: RunState,
                  TMP: IdleState, SHIFT_DOWN: IdleState,  SHIFT_UP: IdleState},
@@ -154,8 +161,10 @@ class Boy:
         self.frame = 0
         self.timer = 0
         self.degreeAT = 0
-        self.mouse_x = 0
-        self.mouse_y = 0
+        self.move_mouse_x = 0
+        self.move_mouse_y = 0
+        self.view_mouse_x = 0
+        self.view_mouse_y = 0
         self.start_x = 0
         self.start_y = 0
         self.t = 0
@@ -189,11 +198,13 @@ class Boy:
 
 
     def handle_event(self, event):
-        if event.type == SDL_MOUSEBUTTONUP:
-            self.mouse_x, self.mouse_y = event.x, 600 - event.y
-            self.total_moveRatio = math.sqrt(((self.mouse_x - self.start_x) ** 2 + (self.mouse_y - self.start_y) ** 2))
-        elif event.type == SDL_MOUSEBUTTONDOWN:
-            self.start_x, self.start_y = self.x, self.y
+
+        if event.type == SDL_MOUSEBUTTONDOWN:
+            self.move_mouse_x, self.move_mouse_y = event.x, 600 - event.y
+            self.total_moveRatio = math.sqrt(((self.move_mouse_x - self.start_x) ** 2 +
+                                              (self.move_mouse_y - self.start_y) ** 2))/10
+        if event.type == SDL_MOUSEMOTION:
+            self.view_mouse_x, self.view_mouse_y = event.x, 600 - event.y
 
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
