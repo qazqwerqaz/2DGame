@@ -27,7 +27,7 @@ class IdleState:
         boy.t = 0
         boy.start_x, boy.start_y = boy.x, boy.y
         if event == LEFT_BUTTON_DOWN:
-            boy.fire_ball()
+            boy.fire_ball('fire_arrow')
         pass
 
     @staticmethod
@@ -51,6 +51,8 @@ class RunState:
         boy.t = 0
         boy.start_x, boy.start_y = boy.x, boy.y
         boy.tile_x, boy.tile_y = int(boy.x) // 20 + 1, int(boy.y) // 20 + 1
+        if event == LEFT_BUTTON_DOWN:
+            boy.fire_ball('fire_arrow')
         pass
 
     @staticmethod
@@ -62,6 +64,7 @@ class RunState:
 
     @staticmethod
     def do(boy):
+
         boy.degreeAT = math.atan2(boy.y - boy.view_mouse_y, boy.x - boy.view_mouse_x)
         boy.t += 1
         a = boy.t / boy.total_moveRatio
@@ -158,10 +161,10 @@ class Boy:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-    def fire_ball(self):
-        ball = Bullet(self.x, self.y, 10, self.degreeAT)
+    def fire_ball(self, data):
+        ball = Bullet(self.x, self.y, 10, self.degreeAT, data)
         game_world.add_object(ball, 1)
-        self.inventory.pop('fire_arrow')
+        self.inventory.pop(data)
         pass
 
     def add_event(self, event):
