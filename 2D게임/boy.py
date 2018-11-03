@@ -1,11 +1,12 @@
 from pico2d import *
-from ball import Ball
+from bullet import Bullet
 
 import game_world
 import math
+
 # Boy Event
 
-RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP, SLEEP_TIMER, TMP, SHIFT_DOWN, SHIFT_UP = range(8)
+RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP, TMP = range(5)
 
 key_event_table = {
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): RIGHT_BUTTON_DOWN,
@@ -13,10 +14,6 @@ key_event_table = {
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): RIGHT_BUTTON_UP,
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT): LEFT_BUTTON_UP,
     (SDL_KEYDOWN, SDLK_SPACE): TMP,
-    (SDL_KEYDOWN, SDLK_LSHIFT): SHIFT_DOWN,
-    (SDL_KEYUP, SDLK_LSHIFT): SHIFT_UP,
-    (SDL_KEYDOWN, SDLK_RSHIFT): SHIFT_DOWN,
-    (SDL_KEYUP, SDLK_RSHIFT): SHIFT_UP
 }
 
 
@@ -29,13 +26,13 @@ class IdleState:
     def enter(boy, event):
         boy.t = 0
         boy.start_x, boy.start_y = boy.x, boy.y
+        if event == LEFT_BUTTON_DOWN:
+            boy.fire_ball()
         pass
 
     @staticmethod
     def exit(boy, event):
         # fill here
-        if event == TMP:
-            boy.fire_ball()
         pass
 
     @staticmethod
@@ -53,15 +50,14 @@ class RunState:
     def enter(boy, event):
         boy.t = 0
         boy.start_x, boy.start_y = boy.x, boy.y
+        boy.tile_x, boy.tile_y = int(boy.x) // 20 + 1, int(boy.y) // 20 + 1
         pass
 
     @staticmethod
     def exit(boy, event):
-
         boy.start_x, boy.start_y = boy.x, boy.y
         # fill here
-        if event == TMP:
-            boy.fire_ball()
+
         pass
 
     @staticmethod
@@ -71,38 +67,29 @@ class RunState:
         a = boy.t / boy.total_moveRatio
         boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
         boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
-        if boy.t >= boy.total_moveRatio:
+        boy.tile_x, boy.tile_y = int(boy.x) // 20 + 1, int(boy.y) // 20 + 1
+        if boy.Map[boy.tile_y][boy.tile_x] == 115 or boy.Map[boy.tile_y][boy.tile_x] == 114 or \
+                boy.Map[boy.tile_y][boy.tile_x] == 109 or boy.Map[boy.tile_y][boy.tile_x] == 110 \
+                or boy.t >= boy.total_moveRatio:
+            boy.t -= 1
+            a = boy.t / boy.total_moveRatio
+            boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
+            boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
             boy.add_event(TMP)
+            return
+        elif boy.Map[boy.tile_y][boy.tile_x] == 31:
+            boy.t -= 1
+            a = boy.t / boy.total_moveRatio
+            boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
+            boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
+            boy.add_event(TMP)
+            return
 
     @staticmethod
     def draw(boy):
         boy.image.rotate_draw(boy.degreeAT + 3.14, boy.x, boy.y)
 
 
-class DashState:
-
-    @staticmethod
-    def enter(boy, event):
-        boy.timer = 30
-        pass
-
-    @staticmethod
-    def exit(boy, event):
-        pass
-
-    @staticmethod
-    def do(boy):
-        boy.frame = (boy.frame + 2) % 8
-        boy.timer -= 1
-        boy.x += boy.velocity
-        boy.x += boy.velocity * 10
-        boy.x = clamp(25, boy.x, 1600 - 25)
-        if boy.timer <= 0:
-            boy.add_event(SHIFT_UP)
-
-    @staticmethod
-    def draw(boy):
-        boy.image.rotate_draw(boy.degreeAT + 3.14, boy.x, boy.y)
 
 
 class SleepState:
@@ -131,31 +118,28 @@ class SleepState:
 
 next_state_table = {
 
-    IdleState: {RIGHT_BUTTON_UP: IdleState, LEFT_BUTTON_UP: IdleState,
-                RIGHT_BUTTON_DOWN: RunState, LEFT_BUTTON_DOWN: RunState,
-                SLEEP_TIMER: SleepState, TMP: IdleState,
-                SHIFT_DOWN: IdleState, SHIFT_UP: IdleState},
+    IdleState: {RIGHT_BUTTON_UP: RunState, LEFT_BUTTON_UP: IdleState,
+                RIGHT_BUTTON_DOWN: RunState, LEFT_BUTTON_DOWN: IdleState,
+                TMP: IdleState},
 
-    RunState: {RIGHT_BUTTON_UP: RunState, LEFT_BUTTON_UP: RunState,
-               LEFT_BUTTON_DOWN: RunState, RIGHT_BUTTON_DOWN: RunState,
-               TMP: IdleState, SHIFT_DOWN: DashState,  SHIFT_UP: RunState},
+    RunState: {RIGHT_BUTTON_UP: RunState, RIGHT_BUTTON_DOWN: RunState,
+               LEFT_BUTTON_DOWN: IdleState, LEFT_BUTTON_UP: IdleState,
+               TMP: IdleState},
 
     SleepState: {LEFT_BUTTON_DOWN: RunState, RIGHT_BUTTON_DOWN: RunState,
                  LEFT_BUTTON_UP: RunState, RIGHT_BUTTON_UP: RunState,
-                 TMP: IdleState, SHIFT_DOWN: IdleState,  SHIFT_UP: IdleState},
-
-    DashState: {SHIFT_DOWN: DashState,  SHIFT_UP: RunState,
-                RIGHT_BUTTON_UP:IdleState, LEFT_BUTTON_UP: IdleState,
-                RIGHT_BUTTON_DOWN: IdleState, LEFT_BUTTON_DOWN: IdleState,
+                 TMP: IdleState}
                 }
-}
+
 
 
 class Boy:
 
     def __init__(self):
-        self.x, self.y = 1600 // 2, 90
+        self.x, self.y = 1000 // 2, 300
         self.image = load_image('actorTop1.png')
+        self.Map = None
+        self.inventory = None
         self.velocity = 0
         self.frame = 0
         self.timer = 0
@@ -166,23 +150,29 @@ class Boy:
         self.view_mouse_y = 0
         self.start_x = 0
         self.start_y = 0
+        self.tile_x = 0
+        self.tile_y = 0
         self.t = 0
         self.total_moveRatio = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-
     def fire_ball(self):
-        # fill here
-        ball = Ball(self.x, self.y, 1)
-        game_world.add_object(ball,1)
+        ball = Bullet(self.x, self.y, 10, self.degreeAT)
+        game_world.add_object(ball, 1)
+        self.inventory.pop('fire_arrow')
         pass
-
-
 
     def add_event(self, event):
         self.event_que.insert(0, event)
+
+    def Get_maptile(self, line):
+        self.Map = line
+
+    def Get_inven(self, inventory):
+        self.inventory = inventory
+        pass
 
     def update(self):
         self.cur_state.do(self)

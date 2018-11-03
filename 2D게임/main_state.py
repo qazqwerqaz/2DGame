@@ -8,7 +8,6 @@ import game_world
 
 from boy import Boy
 from grass import Grass
-from ball import Ball
 from Inventory import inventory
 
 
@@ -27,6 +26,10 @@ def enter():
     boy1 = Boy()
     Inventory = inventory()
     grass = Grass()
+    boy.Get_maptile(grass.line)
+    boy1.Get_maptile(grass.line)
+    boy.Get_inven(Inventory)
+    boy1.Get_inven(inventory)
     game_world.add_object(grass, 0)
     game_world.add_object(Inventory, 0)
     game_world.add_object(boy,1)
