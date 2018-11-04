@@ -29,7 +29,7 @@ def enter():
     boy.Get_maptile(grass.line)
     boy1.Get_maptile(grass.line)
     boy.Get_inven(Inventory)
-    boy1.Get_inven(inventory)
+    boy1.Get_inven(Inventory)
     game_world.add_object(grass, 0)
     game_world.add_object(Inventory, 0)
     game_world.add_object(boy,1)

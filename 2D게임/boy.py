@@ -1,4 +1,5 @@
 from pico2d import *
+import time
 from bullet import Bullet
 
 import game_world
@@ -26,18 +27,21 @@ class IdleState:
     def enter(boy, event):
         boy.t = 0
         boy.start_x, boy.start_y = boy.x, boy.y
-        if event == LEFT_BUTTON_DOWN:
-            boy.fire_ball('fire_arrow')
+
         pass
 
     @staticmethod
     def exit(boy, event):
         # fill here
+        if event == LEFT_BUTTON_DOWN:
+            boy.fire_ball(boy.bullet_type)
         pass
 
     @staticmethod
     def do(boy):
         boy.degreeAT = math.atan2(boy.y - boy.view_mouse_y, boy.x - boy.view_mouse_x)
+        if time.time() - boy.click_time >= 2:
+            boy.fire_ball(boy.bullet_type)
 
     @staticmethod
     def draw(boy):
@@ -51,15 +55,15 @@ class RunState:
         boy.t = 0
         boy.start_x, boy.start_y = boy.x, boy.y
         boy.tile_x, boy.tile_y = int(boy.x) // 20 + 1, int(boy.y) // 20 + 1
-        if event == LEFT_BUTTON_DOWN:
-            boy.fire_ball('fire_arrow')
+
         pass
 
     @staticmethod
     def exit(boy, event):
         boy.start_x, boy.start_y = boy.x, boy.y
         # fill here
-
+        if event == LEFT_BUTTON_DOWN:
+            boy.fire_ball(boy.bullet_type)
         pass
 
     @staticmethod
@@ -134,7 +138,8 @@ next_state_table = {
                  TMP: IdleState}
                 }
 
-
+def Collision(x1, y1, x2, y2):
+    pass
 
 class Boy:
 
@@ -145,7 +150,7 @@ class Boy:
         self.inventory = None
         self.velocity = 0
         self.frame = 0
-        self.timer = 0
+        self.click_time = 0
         self.degreeAT = 0
         self.move_mouse_x = 0
         self.move_mouse_y = 0
@@ -156,6 +161,7 @@ class Boy:
         self.tile_x = 0
         self.tile_y = 0
         self.t = 0
+        self.bullet_type = 'arrow'
         self.total_moveRatio = 0
         self.event_que = []
         self.cur_state = IdleState
@@ -191,11 +197,36 @@ class Boy:
     def handle_event(self, event):
 
         if event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == SDL_BUTTON_LEFT:
+                self.click_time = time.time()
             self.t = 0
             self.start_x, self.start_y = self.x, self.y
             self.move_mouse_x, self.move_mouse_y = event.x, 600 - event.y
             self.total_moveRatio = math.sqrt(((self.move_mouse_x - self.start_x) ** 2 +
                                               (self.move_mouse_y - self.start_y) ** 2))/10
+            if self.move_mouse_x >= 800 and self.move_mouse_x <= 1000:
+                if self.move_mouse_y >= 550 and self.move_mouse_y <= 600:
+                    self.bullet_type = 'fire_arrow'
+                    return
+                elif self.move_mouse_y >= 500 and self.move_mouse_y <= 550:
+                    self.bullet_type = 'ice_arrow'
+                    return
+                elif self.move_mouse_y >= 450 and self.move_mouse_y <= 500:
+                    self.bullet_type = 'arrow'
+                    return
+                elif self.move_mouse_y >= 400 and self.move_mouse_y <= 450:
+                    self.bullet_type = 'fire_arrow'
+                    return
+                elif self.move_mouse_y >= 300 and self.move_mouse_y <= 350:
+                    self.bullet_type = 'fire_arrow'
+                    return
+                elif self.move_mouse_y >= 250 and self.move_mouse_y <= 300:
+                    self.bullet_type = 'fire_arrow'
+                    return
+        else:
+            self.click_time = time.time()
+        if event.type == SDL_MOUSEBUTTONUP and event.button == SDL_BUTTON_LEFT:
+            self.click_time = time.time()
 
         if event.type == SDL_MOUSEMOTION:
             self.view_mouse_x, self.view_mouse_y = event.x, 600 - event.y
