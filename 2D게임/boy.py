@@ -40,8 +40,7 @@ class IdleState:
     @staticmethod
     def do(boy):
         boy.degreeAT = math.atan2(boy.y - boy.view_mouse_y, boy.x - boy.view_mouse_x)
-        if time.time() - boy.click_time >= 2:
-            boy.fire_ball(boy.bullet_type)
+
 
     @staticmethod
     def draw(boy):
