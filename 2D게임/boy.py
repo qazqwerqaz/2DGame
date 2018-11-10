@@ -1,4 +1,5 @@
 from pico2d import *
+import game_framework
 import time
 from bullet import Bullet
 
@@ -17,6 +18,11 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): TMP,
 }
 
+PIXEL_PER_METER = (10.0 / 0.2)  # 10 pixel 20 cm
+RUN_SPEED_KMPH = 20.0  # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 # Boy States
 
@@ -69,7 +75,7 @@ class RunState:
     def do(boy):
 
         boy.degreeAT = math.atan2(boy.y - boy.view_mouse_y, boy.x - boy.view_mouse_x)
-        boy.t += 1
+        boy.t += game_framework.frame_time
         a = boy.t / boy.total_moveRatio
         boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
         boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
@@ -77,14 +83,14 @@ class RunState:
         if boy.Map[boy.tile_y][boy.tile_x] == 115 or boy.Map[boy.tile_y][boy.tile_x] == 114 or \
                 boy.Map[boy.tile_y][boy.tile_x] == 109 or boy.Map[boy.tile_y][boy.tile_x] == 110 \
                 or boy.t >= boy.total_moveRatio:
-            boy.t -= 1
+            boy.t -= game_framework.frame_time
             a = boy.t / boy.total_moveRatio
             boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
             boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
             boy.add_event(TMP)
             return
         elif boy.Map[boy.tile_y][boy.tile_x] == 31:
-            boy.t -= 1
+            boy.t -= game_framework.frame_time
             a = boy.t / boy.total_moveRatio
             boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
             boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
@@ -202,7 +208,7 @@ class Boy:
             self.start_x, self.start_y = self.x, self.y
             self.move_mouse_x, self.move_mouse_y = event.x, 600 - event.y
             self.total_moveRatio = math.sqrt(((self.move_mouse_x - self.start_x) ** 2 +
-                                              (self.move_mouse_y - self.start_y) ** 2))/10
+                                              (self.move_mouse_y - self.start_y) ** 2))/RUN_SPEED_PPS
             if self.move_mouse_x >= 800 and self.move_mouse_x <= 1000:
                 if self.move_mouse_y >= 550 and self.move_mouse_y <= 600:
                     self.bullet_type = 'fire_arrow'

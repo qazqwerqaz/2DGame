@@ -95,9 +95,9 @@ def run(start_state):
     while (running):
         runTime = time.time()
         stack[-1].handle_events()
+        stack[-1].update()
 
         if runTime - cur_time >= 0.05:
-            stack[-1].update()
             cur_time = runTime
             stack[-1].draw()
         frame_time = time.time() - current_time
