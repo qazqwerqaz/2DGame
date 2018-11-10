@@ -12,11 +12,11 @@ class Bullet:
 
     def __init__(self, x = 400, y = 300, velocity = 1, degreeAT = 1, data = 1):
         if Bullet.arrow_image == None:
-            Bullet.arrow_image = load_image('arrow.png')
+            Bullet.arrow_image = load_image('arrow\\arrow.png')
         if Bullet.fire_arrow_image == None:
-            Bullet.fire_arrow_image = load_image('fire_arrow.png')
+            Bullet.fire_arrow_image = load_image('arrow\\fire_arrow.png')
         if Bullet.ice_arrow_image == None:
-            Bullet.ice_arrow_image = load_image('ice_arrow.png')
+            Bullet.ice_arrow_image = load_image('arrow\\ice_arrow.png')
         self.x, self.y, self.velocity, self.degreeAT = x, y, velocity, degreeAT
         self.move_x, self.move_y = self.velocity * math.cos(self.degreeAT+3.141592), self.velocity * math.sin(self.degreeAT+3.141592)
         self.data = data

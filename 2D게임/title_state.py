@@ -9,7 +9,7 @@ mouse_y = 0
 
 def enter():
     global image
-    image = load_image('title.png')
+    image = load_image('ui\\title.png')
     pass
 
 
@@ -50,11 +50,11 @@ def draw():
 def update():
     global image
     if (mouse_x > 500 and mouse_x > 600 and mouse_y > 250 and mouse_y < 400):
-        image = load_image('title_start.png')
+        image = load_image('ui\\title_start.png')
     elif(mouse_x > 500 and mouse_x > 600 and mouse_y > 450 and mouse_y < 600):
-        image = load_image('title_maptool.png')
+        image = load_image('ui\\title_maptool.png')
     else:
-        image = load_image('title.png')
+        image = load_image('ui\\title.png')
     pass
 
 

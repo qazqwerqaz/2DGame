@@ -144,7 +144,7 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 1000 // 2, 300
-        self.image = load_image('actorTop1.png')
+        self.image = load_image('actor\\actorTop1.png')
         self.Map = None
         self.inventory = None
         self.velocity = 0
@@ -167,9 +167,9 @@ class Boy:
         self.cur_state.enter(self, None)
 
     def fire_ball(self, data):
-        ball = Bullet(self.x, self.y, 10, self.degreeAT, data)
-        game_world.add_object(ball, 1)
-        self.inventory.pop(data)
+        if self.inventory.pop(data):
+            ball = Bullet(self.x, self.y, 10, self.degreeAT, data)
+            game_world.add_object(ball, 1)
         pass
 
     def add_event(self, event):
