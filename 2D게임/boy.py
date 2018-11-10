@@ -144,8 +144,8 @@ next_state_table = {
                  TMP: IdleState}
                 }
 
-def Collision(x1, y1, x2, y2):
-    pass
+
+
 
 class Boy:
 
@@ -176,7 +176,7 @@ class Boy:
     def fire_ball(self, data):
         if self.inventory.pop(data):
             ball = Bullet(self.x, self.y, ARROW_SPEED_PPS, self.degreeAT, data)
-            game_world.add_object(ball, 1)
+            game_world.add_object(ball, 2)
         pass
 
     def add_event(self, event):

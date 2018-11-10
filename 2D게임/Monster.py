@@ -91,6 +91,8 @@ class Attacked_State:
 
     @staticmethod
     def do(Slime):
+        Slime.x -= 5
+        Slime.add_event(IDLE)
         pass
 
     @staticmethod
@@ -100,8 +102,10 @@ class Attacked_State:
 
 next_state_table = {
 
-    RunState: {FIRE_ATTACK: RunState, ICE_ATTACK: RunState, ARROW_ATTACK: RunState, IDLE: RunState}
-
+    RunState: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State, ARROW_ATTACK: Attacked_State, IDLE: RunState},
+    Fire_Attacked_State: {FIRE_ATTACK: RunState, ICE_ATTACK: RunState, ARROW_ATTACK: RunState, IDLE: RunState},
+    Ice_Attacked_State: {FIRE_ATTACK: RunState, ICE_ATTACK: RunState, ARROW_ATTACK: RunState, IDLE: RunState},
+    Attacked_State: {FIRE_ATTACK: RunState, ICE_ATTACK: RunState, ARROW_ATTACK: RunState, IDLE: RunState}
 }
 
 class Slime:
@@ -113,11 +117,12 @@ class Slime:
         self.velocity = 0
         self.frame = 0
         self.timer = 0
-        self.collide_event = False
-        self.data = 'a'
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self)
+
+    def get_bb(self):
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -127,15 +132,17 @@ class Slime:
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self)
-            self.cur_state = next_state_table[self.cur_state][IDLE]
+            self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self)
-        if (self.collide_event, self.data) in key_event_table:
-            key_event = key_event_table[(self.collide_event, self.data)]
-            self.add_event(key_event)
+
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
 
-    def Attacked(self):
+    def Attacked(self, colide, data):
+        if (colide, data) in key_event_table:
+            key_event = key_event_table[(colide, data)]
+            self.add_event(key_event)
         pass
 

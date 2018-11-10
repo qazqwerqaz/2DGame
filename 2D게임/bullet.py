@@ -26,6 +26,9 @@ class Bullet:
         self.shoot_time = 0
         self.start_time = time.time()
 
+    def get_bb(self):
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
+
     def draw(self):
         self.frame = (self.frame+1) % 5
         if self.data == 'fire_arrow':
@@ -34,13 +37,15 @@ class Bullet:
             self.ice_arrow_image.clip_composite_draw(self.frame * 90, 0, 90, 30, self.degreeAT, '',self.x, self.y, 90, 30)
         elif self.data == 'arrow':
             self.arrow_image.rotate_draw(self.degreeAT + 3.141592, self.x, self.y)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         # 화살은 시간이 지날 수록 점점 느려 진다
-        self.shoot_time = time.time() - self.start_time + 6
+        self.start_time -= game_framework.frame_time
+        self.shoot_time = time.time() - self.start_time - 10
 
-        self.move_x -= (self.move_per_pixel_x * self.shoot_time**2)*3
-        self.move_y -= (self.move_per_pixel_y * self.shoot_time**2)*3
+        self.move_x -= (self.move_per_pixel_x * self.shoot_time**2)
+        self.move_y -= (self.move_per_pixel_y * self.shoot_time**2)
 
         self.x += self.move_x * game_framework.frame_time
         self.y += self.move_y * game_framework.frame_time
