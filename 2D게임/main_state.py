@@ -1,6 +1,7 @@
 import random
 import json
 import os
+import time
 
 from pico2d import *
 import game_framework
@@ -9,7 +10,7 @@ import game_world
 from boy import Boy
 from grass import Grass
 from Inventory import inventory
-
+from Monster import Slime
 
 name = "MainState"
 
@@ -17,8 +18,9 @@ boy = None
 boy1 = None
 grass = None
 Inventory = None
-move_boy = 0
-
+monsters = None
+Boy_ID = 0
+Monster_Spawn_time = 0
 
 def enter():
     global boy, boy1, grass, Inventory
@@ -32,8 +34,11 @@ def enter():
     boy1.Get_inven(Inventory)
     game_world.add_object(grass, 0)
     game_world.add_object(Inventory, 0)
-    game_world.add_object(boy,1)
+    game_world.add_object(boy, 1)
     game_world.add_object(boy1, 1)
+
+    global Monster
+
 
 def exit():
     game_world.clear()
@@ -48,7 +53,7 @@ def resume():
 
 
 def handle_events():
-    global move_boy
+    global Boy_ID
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -57,11 +62,11 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 game_framework.quit()
             elif event.key == SDLK_1:
-                move_boy = 1
+                Boy_ID = 1
             elif event.key == SDLK_2:
-                move_boy = 0
+                Boy_ID = 0
         else:
-            if move_boy == 0:
+            if Boy_ID == 0:
                 boy.handle_event(event)
             else:
                 boy1.handle_event(event)
@@ -69,6 +74,14 @@ def handle_events():
 
 
 def update():
+    global Monster_Spawn_time
+    Monster_Spawn_time += game_framework.frame_time
+    if Monster_Spawn_time >= 2:
+        global monsters
+        monsters = [Slime() for i in range(10)]
+        game_world.add_objects(monsters, 1)
+        Monster_Spawn_time = 0
+
     for game_object in game_world.all_objects():
         game_object.update()
 
