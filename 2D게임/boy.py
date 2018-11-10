@@ -28,7 +28,6 @@ ARROW_SPEED_PPS = (70 * PIXEL_PER_METER)
 
 # Boy States
 
-
 class IdleState:
 
     @staticmethod
@@ -41,7 +40,7 @@ class IdleState:
     @staticmethod
     def exit(boy, event):
         # fill here
-        if event == LEFT_BUTTON_DOWN:
+        if event == LEFT_BUTTON_UP:
             boy.fire_ball(boy.bullet_type)
         pass
 

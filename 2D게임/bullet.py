@@ -37,12 +37,17 @@ class Bullet:
 
     def update(self):
         # 화살은 시간이 지날 수록 점점 느려 진다
-        self.shoot_time = time.time() - self.start_time + 10
+        self.shoot_time = time.time() - self.start_time + 6
 
-        self.move_x -= self.move_per_pixel_x * self.shoot_time**2
-        self.move_y -= self.move_per_pixel_y * self.shoot_time**2
+        self.move_x -= (self.move_per_pixel_x * self.shoot_time**2)*3
+        self.move_y -= (self.move_per_pixel_y * self.shoot_time**2)*3
 
         self.x += self.move_x * game_framework.frame_time
         self.y += self.move_y * game_framework.frame_time
-        if self.x < 25 or self.x > 1600 - 25 or self.move_x >= 0:
+        if self.x < 25 or self.x > 1600 - 25:
+            game_world.remove_object(self)
+
+        if self.move_per_pixel_x > 0 and self.move_x < 0:
+            game_world.remove_object(self)
+        elif self.move_per_pixel_x < 0 and self.move_x > 0:
             game_world.remove_object(self)
