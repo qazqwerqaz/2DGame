@@ -5,38 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="023a8950-661e-4081-817b-11f9f984b38a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/Inventory.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/Inventory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/MArrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/MMonster.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/MUI2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/Mactor.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/Mactor1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/Mdesert 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/Mdesert3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/Mobile - The Dark Dimension The Secret - Town.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/actorTop.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/actorTop1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/actorW.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/animation_sheet.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/ball21x21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/boy.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/boy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/bullet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/fire_arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/fire_arrow_effect.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/godoMaum.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/grass.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/ice_arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/ice_arrow_effect.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/inventory.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/kpu_credit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/run_animation.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/title.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/title_maptool.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/title_start.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/title_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/title_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2D게임/game_framework.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/game_framework.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,12 +43,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="4270" />
+          <entry key="py" value="4285" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="4270" />
+          <entry key="Python" value="4285" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -123,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/2D게임/Inventory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            <state relative-caret-position="323">
+              <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
               <folding>
                 <marker date="1541819100531" expanded="true" signature="89:90" ph="..." />
                 <marker date="1541819100531" expanded="true" signature="406:595" ph="..." />
@@ -141,13 +110,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/2D게임/boy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="171" column="42" lean-forward="true" selection-start-line="171" selection-start-column="42" selection-end-line="171" selection-end-column="42" />
+            <state relative-caret-position="1729">
+              <caret line="139" selection-start-line="139" selection-end-line="140" selection-end-column="8" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
-                <marker date="1541819100547" expanded="true" signature="846:939" ph="..." />
-                <marker date="1541819100547" expanded="true" signature="3696:3707" ph="..." />
-                <marker date="1541819100547" expanded="true" signature="4704:4819" ph="..." />
+                <marker date="1541819249685" expanded="true" signature="846:939" ph="..." />
+                <marker date="1541819249685" expanded="true" signature="3696:3707" ph="..." />
+                <marker date="1541819249685" expanded="true" signature="4703:4818" ph="..." />
               </folding>
             </state>
           </provider>
@@ -195,11 +164,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/2D게임/game_framework.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
+            <state relative-caret-position="380">
+              <caret line="99" column="30" selection-start-line="99" selection-start-column="30" selection-end-line="99" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -232,20 +201,20 @@
         <option value="$PROJECT_DIR$/2D게임/Bow_Man.py" />
         <option value="$PROJECT_DIR$/2D게임/game_world.py" />
         <option value="$PROJECT_DIR$/2D게임/grass.py" />
-        <option value="$PROJECT_DIR$/2D게임/game_framework.py" />
         <option value="$PROJECT_DIR$/2D게임/ball.py" />
         <option value="$PROJECT_DIR$/2D게임/main_state.py" />
         <option value="$PROJECT_DIR$/2D게임/mygame.py" />
         <option value="$PROJECT_DIR$/2D게임/title_state.py" />
         <option value="$PROJECT_DIR$/2D게임/bullet.py" />
-        <option value="$PROJECT_DIR$/2D게임/boy.py" />
         <option value="$PROJECT_DIR$/2D게임/Inventory.py" />
+        <option value="$PROJECT_DIR$/2D게임/boy.py" />
+        <option value="$PROJECT_DIR$/2D게임/game_framework.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="820" />
-    <option name="width" value="856" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
@@ -354,15 +323,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="0" width="974" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12118019" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2457265" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3170467" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32017544" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3995657" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -422,13 +391,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2D게임/game_framework.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/python/Lib/site-packages/pico2d/pico2d.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="541">
@@ -473,29 +435,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2D게임/boy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="171" column="42" lean-forward="true" selection-start-line="171" selection-start-column="42" selection-end-line="171" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-            <marker date="1541819100547" expanded="true" signature="846:939" ph="..." />
-            <marker date="1541819100547" expanded="true" signature="3696:3707" ph="..." />
-            <marker date="1541819100547" expanded="true" signature="4704:4819" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/2D게임/Inventory.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        <state relative-caret-position="323">
+          <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
           <folding>
             <marker date="1541819100531" expanded="true" signature="89:90" ph="..." />
             <marker date="1541819100531" expanded="true" signature="406:595" ph="..." />
             <marker date="1541819100531" expanded="true" signature="493:595" ph="..." />
             <marker date="1541819100531" expanded="true" signature="646:656" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2D게임/boy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1729">
+          <caret line="139" selection-start-line="139" selection-end-line="140" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <marker date="1541819249685" expanded="true" signature="846:939" ph="..." />
+            <marker date="1541819249685" expanded="true" signature="3696:3707" ph="..." />
+            <marker date="1541819249685" expanded="true" signature="4703:4818" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2D게임/game_framework.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="99" column="30" selection-start-line="99" selection-start-column="30" selection-end-line="99" selection-end-column="30" />
         </state>
       </provider>
     </entry>
