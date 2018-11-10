@@ -1,5 +1,6 @@
 from pico2d import *
-
+import time
+import game_framework
 import math
 import game_world
 
@@ -19,8 +20,11 @@ class Bullet:
             Bullet.ice_arrow_image = load_image('arrow\\ice_arrow.png')
         self.x, self.y, self.velocity, self.degreeAT = x, y, velocity, degreeAT
         self.move_x, self.move_y = self.velocity * math.cos(self.degreeAT+3.141592), self.velocity * math.sin(self.degreeAT+3.141592)
+        self.move_per_pixel_x, self.move_per_pixel_y = math.cos(self.degreeAT+3.141592),  math.sin(self.degreeAT+3.141592)
         self.data = data
         self.frame = 0
+        self.shoot_time = 0
+        self.start_time = time.time()
 
     def draw(self):
         self.frame = (self.frame+1) % 5
@@ -32,7 +36,13 @@ class Bullet:
             self.arrow_image.rotate_draw(self.degreeAT + 3.141592, self.x, self.y)
 
     def update(self):
-        self.x += self.move_x
-        self.y += self.move_y
-        if self.x < 25 or self.x > 1600 - 25:
+        # 화살은 시간이 지날 수록 점점 느려 진다
+        self.shoot_time = time.time() - self.start_time + 10
+
+        self.move_x -= self.move_per_pixel_x * self.shoot_time**2
+        self.move_y -= self.move_per_pixel_y * self.shoot_time**2
+
+        self.x += self.move_x * game_framework.frame_time
+        self.y += self.move_y * game_framework.frame_time
+        if self.x < 25 or self.x > 1600 - 25 or self.move_x >= 0:
             game_world.remove_object(self)

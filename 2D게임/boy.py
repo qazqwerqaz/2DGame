@@ -18,11 +18,13 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): TMP,
 }
 
-PIXEL_PER_METER = (10.0 / 0.2)  # 10 pixel 20 cm
+PIXEL_PER_METER = (10 / 0.33)  # 30pixel -> 100cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+# 화살 속도 초당 70m
+ARROW_SPEED_PPS = (70 * PIXEL_PER_METER)
 
 # Boy States
 
@@ -174,7 +176,7 @@ class Boy:
 
     def fire_ball(self, data):
         if self.inventory.pop(data):
-            ball = Bullet(self.x, self.y, 10, self.degreeAT, data)
+            ball = Bullet(self.x, self.y, ARROW_SPEED_PPS, self.degreeAT, data)
             game_world.add_object(ball, 1)
         pass
 
