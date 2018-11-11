@@ -108,7 +108,7 @@ def update():
     for monster in monster_corps:
         for bullet in bullets:
             if collide(bullet, monster):
-                monster.Attacked(True, bullet.data)
+                monster.Attacked(True, bullet.data, bullet.move_x, bullet.move_y)
                 game_world.remove_object(bullet)
 
 

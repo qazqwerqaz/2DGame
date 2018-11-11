@@ -24,7 +24,7 @@ class Bullet:
         self.data = data
         self.frame = 0
         self.shoot_time = 0
-        self.start_time = time.time()
+        self.start_time = time.time()*100
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
@@ -41,8 +41,9 @@ class Bullet:
 
     def update(self):
         # 화살은 시간이 지날 수록 점점 느려 진다
-        self.start_time -= game_framework.frame_time
-        self.shoot_time = time.time() - self.start_time - 10
+        self.shoot_time = time.time()*100 - self.start_time
+        if self.shoot_time == 0:
+            self.shoot_time = 1
 
         self.move_x -= (self.move_per_pixel_x * self.shoot_time**2)
         self.move_y -= (self.move_per_pixel_y * self.shoot_time**2)
