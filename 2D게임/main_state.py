@@ -130,7 +130,7 @@ def update():
                     for monster in monster_corps:
                         if monster.In_Collide_Range == True:
                             monster.Attacked(bullet.data, bullet.move_x, bullet.move_y)
-                            game_world.remove_object(bullet)
+                            bullet.explosion = True
 
 
 

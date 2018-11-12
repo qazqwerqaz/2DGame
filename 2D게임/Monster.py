@@ -114,11 +114,11 @@ next_state_table = {
 
     RunState: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
                ARROW_ATTACK: Attacked_State, IDLE: RunState},
-    Fire_Attacked_State: {FIRE_ATTACK: RunState, ICE_ATTACK: RunState,
-                          ARROW_ATTACK: RunState, IDLE: RunState},
-    Ice_Attacked_State: {FIRE_ATTACK: RunState, ICE_ATTACK: RunState,
-                         ARROW_ATTACK: RunState, IDLE: RunState},
-    Attacked_State: {FIRE_ATTACK: Attacked_State, ICE_ATTACK: RunState,
+    Fire_Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
+                          ARROW_ATTACK: Attacked_State, IDLE: RunState},
+    Ice_Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
+                         ARROW_ATTACK: Attacked_State, IDLE: RunState},
+    Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
                      ARROW_ATTACK: Attacked_State, IDLE: RunState}
 }
 
