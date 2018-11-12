@@ -67,9 +67,7 @@ class RunState:
     @staticmethod
     def exit(boy, event):
         boy.start_x, boy.start_y = boy.x, boy.y
-        # fill here
-        if event == LEFT_BUTTON_DOWN:
-            boy.fire_ball(boy.bullet_type)
+        # fill her
         pass
 
     @staticmethod

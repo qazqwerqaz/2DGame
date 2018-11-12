@@ -95,6 +95,8 @@ class Bullet:
             elif self.move_per_pixel_x < 0 and self.move_x > 0:
                 game_world.remove_object(self)
         else:
+            if self.data == 'arrow':
+                game_world.remove_object(self)
             self.effect_frame = (self.effect_frame+EFFECT_FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
             if int(self.effect_frame) >= 6:
                 game_world.remove_object(self)

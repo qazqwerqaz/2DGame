@@ -48,18 +48,27 @@ class Fire_Attacked_State:
 
     @staticmethod
     def enter(Slime):
-       pass
+        Slime.timer = 0
+        pass
 
     @staticmethod
     def exit(Slime):
+
         pass
 
     @staticmethod
     def do(Slime):
+        Slime.timer += game_framework.frame_time
+        back_move_ratio = Slime.timer / game_framework.frame_time
+        Slime.x += Slime.arrow_speed_x / back_move_ratio * game_framework.frame_time
+        Slime.y += Slime.arrow_speed_y / back_move_ratio * game_framework.frame_time
+        if Slime.timer >= 0.2:
+            Slime.add_event(IDLE)
         pass
 
     @staticmethod
     def draw(Slime):
+        Slime.image.rotate_draw(0, Slime.x, Slime.y)
         pass
 
 
@@ -67,18 +76,24 @@ class Ice_Attacked_State:
 
     @staticmethod
     def enter(Slime):
-       pass
+        Slime.timer = 0
+        pass
 
     @staticmethod
     def exit(Slime):
+
         pass
 
     @staticmethod
     def do(Slime):
+        Slime.timer += game_framework.frame_time
+        if Slime.timer >= 0.2:
+            Slime.add_event(IDLE)
         pass
 
     @staticmethod
     def draw(Slime):
+        Slime.image.rotate_draw(0, Slime.x, Slime.y)
         pass
 
 
@@ -91,7 +106,6 @@ class Attacked_State:
 
     @staticmethod
     def exit(Slime):
-        Slime.timer = 0
         pass
 
     @staticmethod
@@ -107,11 +121,11 @@ class Attacked_State:
 
     @staticmethod
     def draw(Slime):
+        Slime.image.rotate_draw(0, Slime.x, Slime.y)
         pass
 
 
 next_state_table = {
-
     RunState: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
                ARROW_ATTACK: Attacked_State, IDLE: RunState},
     Fire_Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
@@ -125,9 +139,11 @@ next_state_table = {
 
 class Slime:
 
-    def __init__(self):
+    def __init__(self, hp, type):
         self.x, self.y = 0, random.randint(0, 600)
         self.image = load_image('Monster1.png')
+        self.HP = hp
+        self.move_type = type
         self.dir = 1
         self.velocity = 0
         self.frame = 0

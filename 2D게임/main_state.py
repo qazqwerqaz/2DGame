@@ -26,6 +26,8 @@ monster_corps = []
 Boy_ID = 0
 Monster_Spawn_time = 0
 
+SlimeHp = 100
+
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
@@ -103,10 +105,12 @@ def handle_events():
 
 def update():
     global Monster_Spawn_time, monster_corps
+
     Monster_Spawn_time += game_framework.frame_time
     if Monster_Spawn_time >= 2:
-        global monsters
-        monsters = [Slime() for i in range(10)]
+        global monsters, SlimeHp
+        SlimeHp += 10
+        monsters = [Slime(random.randint(SlimeHp - 50, SlimeHp + 50), random.randint(0, 3)) for i in range(10)]
         game_world.add_objects(monsters, 3)
         Monster_Spawn_time = 0
         monster_corps += monsters
