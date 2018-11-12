@@ -37,6 +37,17 @@ def collide(a, b):
 
     return True
 
+def In_Collide_Range(a, b):
+    left_a, bottom_a, right_a, top_a = a.explosion_range()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
+
 def enter():
     global boy, boy1, grass, Inventory, bullet
     bullet = Bullet()
@@ -105,11 +116,23 @@ def update():
 
     bullets = game_world.Return_layer2_obj()
 
-    for monster in monster_corps:
-        for bullet in bullets:
-            if collide(bullet, monster):
-                monster.Attacked(True, bullet.data, bullet.move_x, bullet.move_y)
-                game_world.remove_object(bullet)
+    if len(bullets) != 0:
+        for monster in monster_corps:
+            for bullet in bullets:
+                if In_Collide_Range(bullet, monster):
+                    monster.In_Collide_Range = True
+                else:
+                    monster.In_Collide_Range = False
+
+        for monster in monster_corps:
+            for bullet in bullets:
+                if collide(bullet, monster):
+                    for monster in monster_corps:
+                        if monster.In_Collide_Range == True:
+                            monster.Attacked(bullet.data, bullet.move_x, bullet.move_y)
+                            game_world.remove_object(bullet)
+
+
 
 
 

@@ -134,6 +134,7 @@ class Slime:
         self.timer = 0
         self.arrow_speed_x = 0
         self.arrow_speed_y = 0
+        self.In_Collide_Range = False
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self)
@@ -156,11 +157,11 @@ class Slime:
         self.cur_state.draw(self)
         draw_rectangle(*self.get_bb())
 
-    def Attacked(self, colide, data, arrow_speed_x, arrow_speed_y):
+    def Attacked(self, data, arrow_speed_x, arrow_speed_y):
         self.arrow_speed_x = arrow_speed_x
         self.arrow_speed_y = arrow_speed_y
-        if (colide, data) in key_event_table:
-            key_event = key_event_table[(colide, data)]
+        if (self.In_Collide_Range, data) in key_event_table:
+            key_event = key_event_table[(self.In_Collide_Range, data)]
             self.add_event(key_event)
         pass
 
