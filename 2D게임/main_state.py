@@ -147,6 +147,13 @@ def draw():
     update_canvas()
 
 
+def get_boy():
+    if Boy_ID == 0:
+        return boy
+    else:
+        return boy1
+
+
 
 
 

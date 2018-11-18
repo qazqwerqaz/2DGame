@@ -1,10 +1,11 @@
 import random
 
+import math
 import game_framework
 import game_world
 from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 from pico2d import *
-
+import main_state
 # Boy Event
 FIRE_ATTACK, ICE_ATTACK, ARROW_ATTACK, IDLE = range(4)
 
@@ -34,14 +35,15 @@ class RunState:
 
     @staticmethod
     def do(Slime):
-        Slime.x += RUN_SPEED_PPS * game_framework.frame_time
+        Slime.x += RUN_SPEED_PPS*math.cos(Slime.dir) * game_framework.frame_time
+        Slime.y += RUN_SPEED_PPS * math.sin(Slime.dir) * game_framework.frame_time
         if Slime.x < 0 or Slime.x > 1600 - 25:
             game_world.remove_object(Slime)
         pass
 
     @staticmethod
     def draw(Slime):
-        Slime.image.rotate_draw(0, Slime.x, Slime.y)
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
 
@@ -69,7 +71,7 @@ class Fire_Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.rotate_draw(0, Slime.x, Slime.y)
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
 
@@ -94,7 +96,7 @@ class Ice_Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.rotate_draw(0, Slime.x, Slime.y)
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
 
@@ -154,9 +156,46 @@ class Slime:
         self.arrow_speed_x = 0
         self.arrow_speed_y = 0
         self.In_Collide_Range = False
+        self.build_behavior_tree()
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self)
+
+    def wander(self):
+        # fill here
+        self.timer -= game_framework.frame_time
+        if self.timer < 0:
+            self.timer += 1.0
+            self.dir = random.random() * 2 * math.pi
+
+        return BehaviorTree.SUCCESS
+
+    def find_player(self):
+        # fill here
+        boy = main_state.get_boy()
+
+        distance = (boy.x - self.x) ** 2 + (boy.y - self.y) ** 2
+        if distance < (PIXEL_PER_METER * 10) ** 2:
+            self.dir = math.atan2(boy.y - self.y, boy.x - self.x)
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def move_to_player(self):
+        # fill here
+        return BehaviorTree.SUCCESS
+
+    def build_behavior_tree(self):
+        # fill here
+        wander_node = LeafNode("Wander", self.wander)
+        find_player_node = LeafNode("Find Player", self.find_player)
+        move_to_player_node = LeafNode("Move to Player", self.move_to_player)
+        chase_node = SequenceNode("Chase")
+        chase_node.add_children(find_player_node, move_to_player_node)
+        wander_chase_node = SelectorNode("WanderChase")
+        wander_chase_node.add_children(chase_node, wander_node)
+        self.bt = BehaviorTree(wander_chase_node)
+
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
@@ -165,6 +204,7 @@ class Slime:
         self.event_que.insert(0, event)
 
     def update(self):
+        self.bt.run()
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
