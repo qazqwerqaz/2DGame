@@ -27,7 +27,7 @@ class RunState:
 
     @staticmethod
     def enter(Slime):
-       pass
+        Slime.timer = 0
 
     @staticmethod
     def exit(Slime):
@@ -51,7 +51,7 @@ class Fire_Attacked_State:
 
     @staticmethod
     def enter(Slime):
-        Slime.timer = 0
+
         pass
 
     @staticmethod
@@ -79,7 +79,6 @@ class Ice_Attacked_State:
 
     @staticmethod
     def enter(Slime):
-        Slime.timer = 0
         pass
 
     @staticmethod
@@ -104,7 +103,6 @@ class Attacked_State:
 
     @staticmethod
     def enter(Slime):
-        Slime.timer = 0
         pass
 
     @staticmethod
@@ -153,6 +151,7 @@ class Slime:
         self.velocity = 0
         self.frame = 0
         self.timer = 0
+        self.dir_timer = 0
         self.arrow_speed_x = 0
         self.arrow_speed_y = 0
         self.In_Collide_Range = False
@@ -163,11 +162,10 @@ class Slime:
 
     def wander(self):
         # fill here
-        self.timer -= game_framework.frame_time
-        if self.timer < 0:
-            self.timer += 1.0
+        self.dir_timer -= game_framework.frame_time
+        if self.dir_timer < 0:
+            self.dir_timer += 1.0
             self.dir = random.random() * 2 * math.pi
-
         return BehaviorTree.SUCCESS
 
     def find_player(self):
@@ -208,9 +206,10 @@ class Slime:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            self.cur_state.exit(self)
-            self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self)
+            if self.cur_state != next_state_table[self.cur_state][event]:
+                self.cur_state.exit(self)
+                self.cur_state = next_state_table[self.cur_state][event]
+                self.cur_state.enter(self)
 
     def draw(self):
         self.cur_state.draw(self)

@@ -24,7 +24,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # 화살 속도 초당 20m
-ARROW_SPEED_PPS = (20 * PIXEL_PER_METER)
+ARROW_SPEED_PPS = (30 * PIXEL_PER_METER)
 
 # Boy States
 
@@ -203,30 +203,31 @@ class Boy:
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
                 self.click_time = time.time()
-            self.t = 0
-            self.start_x, self.start_y = self.x, self.y
-            self.move_mouse_x, self.move_mouse_y = event.x, 600 - event.y
-            self.total_moveRatio = math.sqrt(((self.move_mouse_x - self.start_x) ** 2 +
-                                              (self.move_mouse_y - self.start_y) ** 2))/RUN_SPEED_PPS
-            if self.move_mouse_x >= 800 and self.move_mouse_x <= 1000:
-                if self.move_mouse_y >= 550 and self.move_mouse_y <= 600:
-                    self.bullet_type = 'fire_arrow'
-                    return
-                elif self.move_mouse_y >= 500 and self.move_mouse_y <= 550:
-                    self.bullet_type = 'ice_arrow'
-                    return
-                elif self.move_mouse_y >= 450 and self.move_mouse_y <= 500:
-                    self.bullet_type = 'arrow'
-                    return
-                elif self.move_mouse_y >= 400 and self.move_mouse_y <= 450:
-                    self.bullet_type = 'fire_arrow'
-                    return
-                elif self.move_mouse_y >= 300 and self.move_mouse_y <= 350:
-                    self.bullet_type = 'fire_arrow'
-                    return
-                elif self.move_mouse_y >= 250 and self.move_mouse_y <= 300:
-                    self.bullet_type = 'fire_arrow'
-                    return
+            elif event.button == SDL_BUTTON_RIGHT:
+                self.t = 0
+                self.start_x, self.start_y = self.x, self.y
+                self.move_mouse_x, self.move_mouse_y = event.x, 600 - event.y
+                self.total_moveRatio = math.sqrt(((self.move_mouse_x - self.start_x) ** 2 +
+                                                  (self.move_mouse_y - self.start_y) ** 2))/RUN_SPEED_PPS
+                if self.move_mouse_x >= 800 and self.move_mouse_x <= 1000:
+                    if self.move_mouse_y >= 550 and self.move_mouse_y <= 600:
+                        self.bullet_type = 'fire_arrow'
+                        return
+                    elif self.move_mouse_y >= 500 and self.move_mouse_y <= 550:
+                        self.bullet_type = 'ice_arrow'
+                        return
+                    elif self.move_mouse_y >= 450 and self.move_mouse_y <= 500:
+                        self.bullet_type = 'arrow'
+                        return
+                    elif self.move_mouse_y >= 400 and self.move_mouse_y <= 450:
+                        self.bullet_type = 'fire_arrow'
+                        return
+                    elif self.move_mouse_y >= 300 and self.move_mouse_y <= 350:
+                        self.bullet_type = 'fire_arrow'
+                        return
+                    elif self.move_mouse_y >= 250 and self.move_mouse_y <= 300:
+                        self.bullet_type = 'fire_arrow'
+                        return
         else:
             self.click_time = time.time()
         if event.type == SDL_MOUSEBUTTONUP and event.button == SDL_BUTTON_LEFT:
