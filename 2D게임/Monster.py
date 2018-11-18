@@ -1,8 +1,9 @@
-from pico2d import *
-
 import random
-import game_world
+
 import game_framework
+import game_world
+from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
+from pico2d import *
 
 # Boy Event
 FIRE_ATTACK, ICE_ATTACK, ARROW_ATTACK, IDLE = range(4)
@@ -139,9 +140,11 @@ next_state_table = {
 
 class Slime:
 
+    image = None
     def __init__(self, hp, type):
         self.x, self.y = 0, random.randint(0, 600)
-        self.image = load_image('Monster1.png')
+        if Slime.image == None:
+            Slime.image = load_image('Monster1.png')
         self.HP = hp
         self.move_type = type
         self.dir = 1

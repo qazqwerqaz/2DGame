@@ -4,7 +4,7 @@ import game_framework
 import math
 import game_world
 
-TIME_PER_ACTION = 1
+TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
 FRAMES_PER_ACTION = 5
@@ -40,7 +40,7 @@ class Bullet:
         self.effect_frame = 0
         self.explosion = False
         self.shoot_time = 0
-        self.start_time = time.time()*100
+        self.start_time = time.time()*10
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
@@ -51,7 +51,7 @@ class Bullet:
         elif self.data == 'ice_arrow':
             return self.x - 50, self.y - 50, self.x + 50, self.y + 50
         elif self.data == 'arrow':
-            return self.x - 10, self.y - 10, self.x + 10, self.y + 10
+            return self.x - 20, self.y - 10, self.x + 20, self.y + 10
 
     def draw(self):
         if not self.explosion :
@@ -78,7 +78,7 @@ class Bullet:
         # 화살은 시간이 지날 수록 점점 느려 진다
         if not self.explosion:
             self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 5
-            self.shoot_time = time.time()*100 - self.start_time
+            self.shoot_time = time.time()*10 - self.start_time
             if self.shoot_time == 0:
                 self.shoot_time = 1
 
