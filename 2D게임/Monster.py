@@ -29,9 +29,15 @@ class RunState:
     @staticmethod
     def enter(Slime):
         Slime.timer = 0
+        if Slime.HP <= 0:
+            game_world.remove_object(Slime)
+        if Slime.damage != 0:
+            Slime.HP -= Slime.damage
+            Slime.damage = 0
 
     @staticmethod
     def exit(Slime):
+
         pass
 
     @staticmethod
@@ -191,6 +197,7 @@ class Slime:
         self.dir_timer = 0
         self.arrow_speed_x = 0.0
         self.arrow_speed_y = 0.0
+        self.damage = 0
         self.charge = False
         self.In_Collide_Range = False
         self.build_behavior_tree()
@@ -255,6 +262,7 @@ class Slime:
     def Attacked(self, data, arrow_speed_x, arrow_speed_y):
         self.arrow_speed_x = arrow_speed_x*2
         self.arrow_speed_y = arrow_speed_y*2
+        self.damage = (arrow_speed_x**2 + arrow_speed_y**2)/1000
         if (self.In_Collide_Range, data) in key_event_table:
             key_event = key_event_table[(self.In_Collide_Range, data)]
             self.add_event(key_event)

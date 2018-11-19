@@ -21,7 +21,7 @@ Inventory = None
 monsters = None
 
 bullet = None
-monster_corps = []
+
 
 Boy_ID = 0
 Monster_Spawn_time = 0
@@ -51,6 +51,7 @@ def In_Collide_Range(a, b):
     return True
 
 def enter():
+    get_time()
     global boy, boy1, grass, Inventory, bullet
     bullet = Bullet()
     boy = Boy()
@@ -104,21 +105,21 @@ def handle_events():
 
 
 def update():
-    global Monster_Spawn_time, monster_corps
+    global Monster_Spawn_time
 
     Monster_Spawn_time += game_framework.frame_time
     if Monster_Spawn_time >= 2:
         global monsters, SlimeHp
         SlimeHp += 10
-        monsters = [Slime(random.randint(SlimeHp - 50, SlimeHp + 50), random.randint(0, 3)) for i in range(10)]
+        monsters = [Slime(get_time() / 10, random.randint(0, 3)) for i in range(10)]
         game_world.add_objects(monsters, 3)
         Monster_Spawn_time = 0
-        monster_corps += monsters
 
     for game_object in game_world.all_objects():
         game_object.update()
 
     bullets = game_world.Return_layer2_obj()
+    monster_corps = game_world.Return_layer3_obj()
 
     if len(bullets) != 0:
         for monster in monster_corps:

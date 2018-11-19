@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="023a8950-661e-4081-817b-11f9f984b38a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/2D게임/Monster.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/Monster.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2D게임/game_world.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/game_world.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2D게임/main_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/main_state.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +38,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="png" value="2" />
-          <entry key="py" value="34" />
+          <entry key="py" value="35" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
@@ -44,17 +46,17 @@
         <counts>
           <entry key="Image" value="2" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="34" />
+          <entry key="Python" value="35" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="8077" />
+          <entry key="py" value="8273" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="8077" />
+          <entry key="Python" value="8273" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -62,26 +64,38 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/2D게임/Monster.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-605">
-              <caret line="74" column="31" lean-forward="true" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
+            <state relative-caret-position="304">
+              <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1542633158727" expanded="true" signature="746:752" ph="..." />
-                <marker date="1542633158727" expanded="true" signature="1395:2007" ph="..." />
-                <marker date="1542633158727" expanded="true" signature="1436:1455" ph="..." />
+                <marker date="1542634661723" expanded="true" signature="912:918" ph="..." />
+                <marker date="1542634661723" expanded="true" signature="1562:2174" ph="..." />
+                <marker date="1542634661723" expanded="true" signature="1603:1622" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/2D게임/main_state.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1787">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/2D게임/main_state.py">
+        <entry file="file://$PROJECT_DIR$/2D게임/game_world.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
-              <caret line="130" column="37" lean-forward="true" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
+            <state relative-caret-position="323">
+              <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -119,8 +133,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/2D게임/bullet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="93" column="31" selection-start-line="93" selection-start-column="31" selection-end-line="93" selection-end-column="31" />
+            <state relative-caret-position="1131">
+              <caret line="106" column="46" lean-forward="true" selection-start-line="106" selection-start-column="46" selection-end-line="106" selection-end-column="46" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
                 <marker date="1542626840380" expanded="true" signature="2020:2026" ph="..." />
@@ -169,14 +183,14 @@
         <option value="$PROJECT_DIR$/2D게임/mygame.py" />
         <option value="$PROJECT_DIR$/2D게임/title_state.py" />
         <option value="$PROJECT_DIR$/2D게임/Inventory.py" />
-        <option value="$PROJECT_DIR$/2D게임/game_world.py" />
         <option value="$PROJECT_DIR$/2D게임/grass.py" />
         <option value="$PROJECT_DIR$/2D게임/BehaviorTree.py" />
         <option value="$PROJECT_DIR$/2D게임/game_framework.py" />
         <option value="$PROJECT_DIR$/2D게임/bullet.py" />
-        <option value="$PROJECT_DIR$/2D게임/main_state.py" />
         <option value="$PROJECT_DIR$/2D게임/boy.py" />
         <option value="$PROJECT_DIR$/2D게임/Monster.py" />
+        <option value="$PROJECT_DIR$/2D게임/game_world.py" />
+        <option value="$PROJECT_DIR$/2D게임/main_state.py" />
       </list>
     </option>
   </component>
@@ -369,13 +383,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2D게임/game_world.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/2D게임/Map.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -431,24 +438,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2D게임/main_state.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="130" column="37" lean-forward="true" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/2D게임/bullet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="93" column="31" selection-start-line="93" selection-start-column="31" selection-end-line="93" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-            <marker date="1542626840380" expanded="true" signature="2020:2026" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/2D게임/boy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1462">
@@ -459,15 +448,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/2D게임/bullet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1131">
+          <caret line="106" column="46" lean-forward="true" selection-start-line="106" selection-start-column="46" selection-end-line="106" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <marker date="1542626840380" expanded="true" signature="2020:2026" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/2D게임/Monster.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-605">
-          <caret line="74" column="31" lean-forward="true" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
+        <state relative-caret-position="304">
+          <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1542633158727" expanded="true" signature="746:752" ph="..." />
-            <marker date="1542633158727" expanded="true" signature="1395:2007" ph="..." />
-            <marker date="1542633158727" expanded="true" signature="1436:1455" ph="..." />
+            <marker date="1542634661723" expanded="true" signature="912:918" ph="..." />
+            <marker date="1542634661723" expanded="true" signature="1562:2174" ph="..." />
+            <marker date="1542634661723" expanded="true" signature="1603:1622" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2D게임/game_world.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2D게임/main_state.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1787">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>

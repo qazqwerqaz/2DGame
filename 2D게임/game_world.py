@@ -1,6 +1,8 @@
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
+# layer 2: bullet Objects
+# layer 3: monster Objects
 objects = [[], [], [], []]
 
 
@@ -24,6 +26,8 @@ def remove_object(o):
 def Return_layer2_obj():
     return objects[2]
 
+def Return_layer3_obj():
+    return objects[3]
 
 def clear():
     for o in all_objects():
