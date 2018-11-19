@@ -38,6 +38,7 @@ class Bullet:
         self.data = data
         self.frame = 0
         self.effect_frame = 0
+        self.timer = 0
         self.explosion = False
         self.shoot_time = 0
         self.start_time = time.time()*10
@@ -82,8 +83,12 @@ class Bullet:
             if self.shoot_time == 0:
                 self.shoot_time = 1
 
-            self.move_x -= (self.move_per_pixel_x * self.shoot_time**2)
-            self.move_y -= (self.move_per_pixel_y * self.shoot_time**2)
+            self.timer += game_framework.frame_time
+
+            if self.timer > 0.01:
+                self.timer = 0
+                self.move_x -= (self.move_per_pixel_x * self.shoot_time**2)
+                self.move_y -= (self.move_per_pixel_y * self.shoot_time**2)
 
             self.x += self.move_x * game_framework.frame_time
             self.y += self.move_y * game_framework.frame_time

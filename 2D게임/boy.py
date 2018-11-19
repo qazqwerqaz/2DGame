@@ -24,7 +24,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # 화살 속도 초당 20m
-ARROW_SPEED_PPS = (30 * PIXEL_PER_METER)
+ARROW_SPEED_PPS = (20 * PIXEL_PER_METER)
 
 # Boy States
 
@@ -41,7 +41,7 @@ class IdleState:
     def exit(boy, event):
         # fill here
         if event == LEFT_BUTTON_UP:
-            boy.fire_ball(boy.bullet_type)
+            boy.fire_ball(boy.bullet_type, boy.click_time)
         pass
 
     @staticmethod
@@ -154,7 +154,7 @@ class Boy:
         self.inventory = None
         self.velocity = 0
         self.frame = 0
-        self.click_time = 0
+        self.click_time = 0.0
         self.degreeAT = 0
         self.move_mouse_x = 0
         self.move_mouse_y = 0
@@ -166,14 +166,17 @@ class Boy:
         self.tile_y = 0
         self.t = 0
         self.bullet_type = 'arrow'
+        self.shoot_timer = time.time()
         self.total_moveRatio = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-    def fire_ball(self, data):
-        if self.inventory.pop(data):
-            ball = Bullet(self.x, self.y, ARROW_SPEED_PPS, self.degreeAT, data)
+    def fire_ball(self, data, speed):
+        if time.time() - self.shoot_timer > 0.3 and self.inventory.pop(data):
+
+            self.shoot_timer = time.time()
+            ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT, data)
             game_world.add_object(ball, 2)
         pass
 
@@ -202,7 +205,7 @@ class Boy:
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
-                self.click_time = time.time()
+                self.click_time = time.time() * 20
             elif event.button == SDL_BUTTON_RIGHT:
                 self.t = 0
                 self.start_x, self.start_y = self.x, self.y
@@ -228,10 +231,9 @@ class Boy:
                     elif self.move_mouse_y >= 250 and self.move_mouse_y <= 300:
                         self.bullet_type = 'fire_arrow'
                         return
-        else:
-            self.click_time = time.time()
-        if event.type == SDL_MOUSEBUTTONUP and event.button == SDL_BUTTON_LEFT:
-            self.click_time = time.time()
+        if event.button == SDL_BUTTON_LEFT and event.type == SDL_MOUSEBUTTONUP:
+            self.click_time = time.time() * 20 - self.click_time
+            self.click_time = clamp(0, self.click_time, 70)
 
         if event.type == SDL_MOUSEMOTION:
             self.view_mouse_x, self.view_mouse_y = event.x, 600 - event.y

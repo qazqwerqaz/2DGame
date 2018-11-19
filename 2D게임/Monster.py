@@ -7,13 +7,14 @@ from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 from pico2d import *
 import main_state
 # Boy Event
-FIRE_ATTACK, ICE_ATTACK, ARROW_ATTACK, IDLE = range(4)
+FIRE_ATTACK, ICE_ATTACK, ARROW_ATTACK, IDLE, ATTACK = range(5)
 
 key_event_table = {
     (True, 'fire_arrow'): FIRE_ATTACK,
     (True, 'ice_arrow'): ICE_ATTACK,
     (True, 'arrow'): ARROW_ATTACK,
     (False, 'a'): IDLE,
+    (False, 'b'): ATTACK
 }
 
 PIXEL_PER_METER = (10 / 0.33)  # 30pixel -> 100cm
@@ -35,10 +36,36 @@ class RunState:
 
     @staticmethod
     def do(Slime):
-        Slime.x += RUN_SPEED_PPS*math.cos(Slime.dir) * game_framework.frame_time
+        Slime.x += RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time
         Slime.y += RUN_SPEED_PPS * math.sin(Slime.dir) * game_framework.frame_time
+
+        if Slime.x >= 420:
+            Slime.x -= RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time
+            Slime.add_event(ATTACK)
+
         if Slime.x < 0 or Slime.x > 1600 - 25:
             game_world.remove_object(Slime)
+        pass
+
+    @staticmethod
+    def draw(Slime):
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
+        pass
+
+
+class Attack_State:
+
+    @staticmethod
+    def enter(Slime):
+        pass
+
+    @staticmethod
+    def exit(Slime):
+        pass
+
+    @staticmethod
+    def do(Slime):
+        Slime.x -= RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time
         pass
 
     @staticmethod
@@ -51,7 +78,6 @@ class Fire_Attacked_State:
 
     @staticmethod
     def enter(Slime):
-
         pass
 
     @staticmethod
@@ -63,8 +89,8 @@ class Fire_Attacked_State:
     def do(Slime):
         Slime.timer += game_framework.frame_time
         back_move_ratio = Slime.timer / game_framework.frame_time
-        Slime.x += Slime.arrow_speed_x / back_move_ratio * game_framework.frame_time
-        Slime.y += Slime.arrow_speed_y / back_move_ratio * game_framework.frame_time
+        Slime.x += (Slime.arrow_speed_x / back_move_ratio * game_framework.frame_time)
+        Slime.y += (Slime.arrow_speed_y / back_move_ratio * game_framework.frame_time)
         if Slime.timer >= 0.2:
             Slime.add_event(IDLE)
         pass
@@ -103,6 +129,7 @@ class Attacked_State:
 
     @staticmethod
     def enter(Slime):
+        Slime.timer = 0
         pass
 
     @staticmethod
@@ -114,8 +141,8 @@ class Attacked_State:
         # 약한화살에 맞으면 조금 밀려가고 강한화살에 맞으면 멀리 밀려간다
         Slime.timer += game_framework.frame_time
         back_move_ratio = Slime.timer / game_framework.frame_time
-        Slime.x += Slime.arrow_speed_x/back_move_ratio * game_framework.frame_time
-        Slime.y += Slime.arrow_speed_y/back_move_ratio * game_framework.frame_time
+        Slime.x += (Slime.arrow_speed_x / back_move_ratio * game_framework.frame_time)
+        Slime.y += (Slime.arrow_speed_y / back_move_ratio * game_framework.frame_time)
         if Slime.timer >= 0.2:
             Slime.add_event(IDLE)
         pass
@@ -128,13 +155,15 @@ class Attacked_State:
 
 next_state_table = {
     RunState: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
-               ARROW_ATTACK: Attacked_State, IDLE: RunState},
+               ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: Attack_State},
     Fire_Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
-                          ARROW_ATTACK: Attacked_State, IDLE: RunState},
+                          ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState},
     Ice_Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
-                         ARROW_ATTACK: Attacked_State, IDLE: RunState},
+                         ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState},
     Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
-                     ARROW_ATTACK: Attacked_State, IDLE: RunState}
+                     ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState},
+    Attack_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
+                     ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: Attack_State}
 }
 
 
@@ -152,8 +181,8 @@ class Slime:
         self.frame = 0
         self.timer = 0
         self.dir_timer = 0
-        self.arrow_speed_x = 0
-        self.arrow_speed_y = 0
+        self.arrow_speed_x = 0.0
+        self.arrow_speed_y = 0.0
         self.In_Collide_Range = False
         self.build_behavior_tree()
         self.event_que = []
@@ -206,18 +235,17 @@ class Slime:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            if self.cur_state != next_state_table[self.cur_state][event]:
-                self.cur_state.exit(self)
-                self.cur_state = next_state_table[self.cur_state][event]
-                self.cur_state.enter(self)
+            self.cur_state.exit(self)
+            self.cur_state = next_state_table[self.cur_state][event]
+            self.cur_state.enter(self)
 
     def draw(self):
         self.cur_state.draw(self)
         draw_rectangle(*self.get_bb())
 
     def Attacked(self, data, arrow_speed_x, arrow_speed_y):
-        self.arrow_speed_x = arrow_speed_x
-        self.arrow_speed_y = arrow_speed_y
+        self.arrow_speed_x = arrow_speed_x*2
+        self.arrow_speed_y = arrow_speed_y*2
         if (self.In_Collide_Range, data) in key_event_table:
             key_event = key_event_table[(self.In_Collide_Range, data)]
             self.add_event(key_event)
