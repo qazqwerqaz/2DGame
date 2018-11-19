@@ -65,7 +65,15 @@ class Attack_State:
 
     @staticmethod
     def do(Slime):
-        Slime.x -= RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time
+        if Slime.charge:
+            Slime.x += (RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time)*2
+        else:
+            Slime.x -= RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time
+        if Slime.x >= 420:
+            Slime.charge = False
+        if Slime.x <= 380:
+            Slime.charge = True
+
         pass
 
     @staticmethod
@@ -183,6 +191,7 @@ class Slime:
         self.dir_timer = 0
         self.arrow_speed_x = 0.0
         self.arrow_speed_y = 0.0
+        self.charge = False
         self.In_Collide_Range = False
         self.build_behavior_tree()
         self.event_que = []
