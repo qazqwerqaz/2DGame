@@ -29,7 +29,6 @@ ARROW_SPEED_PPS = (20 * PIXEL_PER_METER)
 # Boy States
 
 class IdleState:
-
     @staticmethod
     def enter(boy, event):
         boy.t = 0

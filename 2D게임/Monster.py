@@ -177,7 +177,7 @@ next_state_table = {
     Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
                      ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState},
     Attack_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
-                     ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: Attack_State}
+                     ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState}
 }
 
 
