@@ -133,18 +133,12 @@ class farming_state:
             boy.inventory.item['arrow'] += 1
             boy.inventory.item['fire_arrow'] = int(boy.inventory.item['arrow'] / 10)
             boy.inventory.item['ice_arrow'] = int(boy.inventory.item['arrow'] / 10)
+            boy.inventory.item['sector_form_arrow'] = int(boy.inventory.item['arrow'] / 10)
             boy.frame = 0
 
     @staticmethod
     def draw(boy):
         boy.Farming_image.clip_composite_draw(int(boy.frame) * 30, 0, 30, 30, boy.degreeAT, '', boy.x, boy.y, 30, 30)
-
-
-
-
-
-
-
 
 
 next_state_table = {
@@ -195,8 +189,13 @@ class Boy:
     def fire_ball(self, data, speed):
         if time.time() - self.shoot_timer > 0.3 and self.inventory.pop(data):
             self.shoot_timer = time.time()
-            ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT, data)
-            game_world.add_object(ball, 2)
+            if data == 'sector_form_arrow':
+                for i in range(0, 10):
+                    ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT - 3.141592 / 4 + 3.141592 / 20 * i, data)
+                    game_world.add_object(ball, 2)
+            else:
+                ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT, data)
+                game_world.add_object(ball, 2)
         pass
 
     def add_event(self, event):
@@ -239,6 +238,9 @@ class Boy:
                         return
                     elif self.move_mouse_y >= 450 and self.move_mouse_y <= 500:
                         self.bullet_type = 'arrow'
+                        return
+                    elif self.move_mouse_y >= 400 and self.move_mouse_y <= 450:
+                        self.bullet_type = 'sector_form_arrow'
                         return
         if event.button == SDL_BUTTON_LEFT and event.type == SDL_MOUSEBUTTONUP:
             self.click_time = time.time() * 30 - self.click_time

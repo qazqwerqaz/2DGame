@@ -50,8 +50,7 @@ class RunState:
             Slime.x -= RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time
             Slime.add_event(ATTACK)
 
-        if Slime.x < 0 or Slime.x > 1600 - 25:
-            game_world.remove_object(Slime)
+
         pass
 
     @staticmethod
@@ -87,7 +86,7 @@ class Attack_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP)
+        Slime.image.opacify(Slime.HP/Slime.start_HP + 0.2)
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -115,7 +114,7 @@ class Fire_Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP)
+        Slime.image.opacify(Slime.HP/Slime.start_HP+ 0.2)
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -141,7 +140,7 @@ class Ice_Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP)
+        Slime.image.opacify(Slime.HP/Slime.start_HP+ 0.2)
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -170,7 +169,7 @@ class Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP)
+        Slime.image.opacify(Slime.HP/Slime.start_HP + 0.2)
         Slime.image.rotate_draw(0, Slime.x, Slime.y)
         pass
 
@@ -200,7 +199,7 @@ class Slime:
         self.castle = castle
 
         self.HP = hp
-        self.start_HP = hp + 10
+        self.start_HP = hp
         self.move_type = type
         self.dir = 1
         self.velocity = 0
@@ -258,6 +257,8 @@ class Slime:
         self.event_que.insert(0, event)
 
     def update(self):
+        if self.x < 0 or self.x > 1600 - 25 or self.y >= 600 or self.y <= 0:
+            game_world.remove_object(Slime)
         self.bt.run()
         self.cur_state.do(self)
         if len(self.event_que) > 0:

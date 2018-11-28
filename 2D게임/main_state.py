@@ -85,6 +85,8 @@ def resume():
 def handle_events():
     global Boy_ID
     events = get_events()
+
+
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
@@ -121,18 +123,15 @@ def update():
     monster_corps = game_world.Return_layer3_obj()
 
     if len(bullets) != 0:
-        for monster in monster_corps:
-            for bullet in bullets:
-                if In_Collide_Range(bullet, monster):
-                    monster.In_Collide_Range = True
-                else:
-                    monster.In_Collide_Range = False
 
         for monster in monster_corps:
             for bullet in bullets:
                 if collide(bullet, monster):
                     for monster in monster_corps:
-                        if monster.In_Collide_Range == True:
+                        if In_Collide_Range(bullet, monster):
+                            monster.In_Collide_Range = True
+                            if bullet.data != 'fire_arrow' or bullet.data != 'ice_arrow':
+                                bullet.data = 'arrow'
                             monster.Attacked(bullet.data, bullet.move_x, bullet.move_y)
                             bullet.explosion = True
 

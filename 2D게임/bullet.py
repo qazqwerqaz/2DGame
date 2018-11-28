@@ -47,22 +47,21 @@ class Bullet:
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def explosion_range(self):
-        if self.data == 'fire_arrow':
-            return self.x - 50, self.y - 50, self.x + 50, self.y + 50
-        elif self.data == 'ice_arrow':
-            return self.x - 50, self.y - 50, self.x + 50, self.y + 50
-        elif self.data == 'arrow':
+        if self.data == 'arrow' or self.data == 'sector_form_arrow':
             return self.x - 20, self.y - 10, self.x + 20, self.y + 10
+        else:
+            return self.x - 50, self.y - 50, self.x + 50, self.y + 50
 
     def draw(self):
-        if not self.explosion :
+        if not self.explosion:
             if self.data == 'fire_arrow':
                 self.fire_arrow_image.clip_composite_draw(int(self.frame) * 90, 0, 90, 30, self.degreeAT, '',self.x, self.y, 90, 30)
             elif self.data == 'ice_arrow':
                 self.ice_arrow_image.clip_composite_draw(int(self.frame) * 90, 0, 90, 30, self.degreeAT, '',self.x, self.y, 90, 30)
             elif self.data == 'arrow':
                 self.arrow_image.rotate_draw(self.degreeAT + 3.141592, self.x, self.y)
-                draw_rectangle(*self.explosion_range())
+            elif self.data == 'sector_form_arrow':
+                self.arrow_image.rotate_draw(self.degreeAT + 3.141592, self.x, self.y)
         else:
             if self.data == 'fire_arrow':
                 self.fire_explosion_image.clip_composite_draw(int(self.effect_frame) * 70, 0, 70, 70,
