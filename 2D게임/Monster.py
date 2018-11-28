@@ -29,11 +29,12 @@ class RunState:
     @staticmethod
     def enter(Slime):
         Slime.timer = 0
-        if Slime.HP <= 0:
-            game_world.remove_object(Slime)
         if Slime.damage != 0:
             Slime.HP -= Slime.damage
             Slime.damage = 0
+        if Slime.HP <= 0:
+            game_world.remove_object(Slime)
+
 
     @staticmethod
     def exit(Slime):
@@ -55,8 +56,8 @@ class RunState:
 
     @staticmethod
     def draw(Slime):
+        Slime.image.opacify(Slime.HP/Slime.start_HP)
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
-        pass
 
 
 class Attack_State:
@@ -84,6 +85,7 @@ class Attack_State:
 
     @staticmethod
     def draw(Slime):
+        Slime.image.opacify(Slime.HP/Slime.start_HP)
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -111,6 +113,7 @@ class Fire_Attacked_State:
 
     @staticmethod
     def draw(Slime):
+        Slime.image.opacify(Slime.HP/Slime.start_HP)
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -119,11 +122,12 @@ class Ice_Attacked_State:
 
     @staticmethod
     def enter(Slime):
+
         pass
 
     @staticmethod
     def exit(Slime):
-
+        Slime.damage = 10
         pass
 
     @staticmethod
@@ -135,6 +139,7 @@ class Ice_Attacked_State:
 
     @staticmethod
     def draw(Slime):
+        Slime.image.opacify(Slime.HP/Slime.start_HP)
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -163,6 +168,7 @@ class Attacked_State:
 
     @staticmethod
     def draw(Slime):
+        Slime.image.opacify(Slime.HP/Slime.start_HP)
         Slime.image.rotate_draw(0, Slime.x, Slime.y)
         pass
 
@@ -188,7 +194,9 @@ class Slime:
         self.x, self.y = 0, random.randint(0, 600)
         if Slime.image == None:
             Slime.image = load_image('Monster1.png')
+
         self.HP = hp
+        self.start_HP = hp
         self.move_type = type
         self.dir = 1
         self.velocity = 0
@@ -257,12 +265,12 @@ class Slime:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
 
     def Attacked(self, data, arrow_speed_x, arrow_speed_y):
         self.arrow_speed_x = arrow_speed_x*2
         self.arrow_speed_y = arrow_speed_y*2
-        self.damage = (arrow_speed_x**2 + arrow_speed_y**2)/1000
+        self.damage = (arrow_speed_x**2 + arrow_speed_y**2)/10000
+        print("%d", self.damage)
         if (self.In_Collide_Range, data) in key_event_table:
             key_event = key_event_table[(self.In_Collide_Range, data)]
             self.add_event(key_event)
