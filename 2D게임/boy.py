@@ -41,6 +41,7 @@ class IdleState:
         # fill here
         if event == LEFT_BUTTON_UP:
             boy.fire_ball(boy.bullet_type, boy.click_time)
+            boy.click_time = 0
         pass
 
     @staticmethod
@@ -51,6 +52,12 @@ class IdleState:
     @staticmethod
     def draw(boy):
         boy.image.rotate_draw(boy.degreeAT + 3.14, boy.x, boy.y)
+        shoot_time = clamp(0, int(time.time() * 30 - boy.click_time), 70)
+        if boy.click_time != 0:
+            boy.font.draw(boy.x, boy.y + 20, ' %3d' % shoot_time, (shoot_time * 3, 0, 0))
+
+
+
 
 
 class RunState:
@@ -166,6 +173,8 @@ class Boy:
         self.t = 0
         self.bullet_type = 'arrow'
         self.shoot_timer = time.time()
+
+        self.font = load_font('font\\godoMaum.ttf', 50)
         self.total_moveRatio = 0
         self.event_que = []
         self.cur_state = IdleState
@@ -204,7 +213,7 @@ class Boy:
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
-                self.click_time = time.time() * 20
+                self.click_time = time.time() * 30
             elif event.button == SDL_BUTTON_RIGHT:
                 self.t = 0
                 self.start_x, self.start_y = self.x, self.y
@@ -231,7 +240,7 @@ class Boy:
                         self.bullet_type = 'fire_arrow'
                         return
         if event.button == SDL_BUTTON_LEFT and event.type == SDL_MOUSEBUTTONUP:
-            self.click_time = time.time() * 20 - self.click_time
+            self.click_time = time.time() * 30 - self.click_time
             self.click_time = clamp(0, self.click_time, 70)
 
         if event.type == SDL_MOUSEMOTION:
