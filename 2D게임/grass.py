@@ -1,6 +1,13 @@
 from pico2d import *
 import numpy as np
 
+import game_framework
+
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+
+FRAMES_PER_ACTION = 7
 def draw_Map(image, map_x, map_y, Map_type):
 
     x, y = 0, 0
@@ -16,7 +23,9 @@ def draw_Map(image, map_x, map_y, Map_type):
 class Grass:
     def __init__(self):
         self.image = load_image('Mdesert.png')
-        self.castle_hp = 500
+        self.castle_hp_image = load_image('ui\\castle_hp.png')
+        self.castle_hp = 300
+        self.hp_frame = 0
         with open('Map.txt', 'r') as self.file:
             self.line = np.loadtxt('Map.txt', delimiter=' ')
 
@@ -28,8 +37,14 @@ class Grass:
                 map_x = map_x + 1
             map_x = 0
             map_y = map_y +1
-
+        self.castle_hp_image.clip_draw(int(self.hp_frame) * 393, 0, 393, 90,
+                                                      600 + (300 - self.castle_hp)/2, 20, self.castle_hp, 20)
 
     def update(self):
+        self.hp_frame = self.hp_frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+        self.hp_frame = self.hp_frame % 7
         pass
+
+    def attacked(self):
+        self.castle_hp -= 5
 

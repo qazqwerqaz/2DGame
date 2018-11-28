@@ -110,7 +110,7 @@ def update():
     if Monster_Spawn_time >= 2:
         global monsters, SlimeHp
         SlimeHp += 1
-        monsters = [Slime(SlimeHp, random.randint(0, 3)) for i in range(10)]
+        monsters = [Slime(SlimeHp, random.randint(0, 3), grass) for i in range(10)]
         game_world.add_objects(monsters, 3)
         Monster_Spawn_time = 0
 

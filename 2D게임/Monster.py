@@ -64,6 +64,7 @@ class Attack_State:
 
     @staticmethod
     def enter(Slime):
+
         pass
 
     @staticmethod
@@ -79,6 +80,7 @@ class Attack_State:
         if Slime.x >= 420:
             Slime.charge = False
         if Slime.x <= 380:
+            Slime.castle.attacked()
             Slime.charge = True
 
         pass
@@ -190,10 +192,12 @@ next_state_table = {
 class Slime:
 
     image = None
-    def __init__(self, hp, type):
+    def __init__(self, hp, type,castle):
         self.x, self.y = 0, random.randint(0, 600)
         if Slime.image == None:
             Slime.image = load_image('Monster1.png')
+
+        self.castle = castle
 
         self.HP = hp
         self.start_HP = hp + 10
@@ -246,7 +250,6 @@ class Slime:
         wander_chase_node = SelectorNode("WanderChase")
         wander_chase_node.add_children(chase_node, wander_node)
         self.bt = BehaviorTree(wander_chase_node)
-
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
