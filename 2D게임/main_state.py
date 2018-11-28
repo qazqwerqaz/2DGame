@@ -67,7 +67,6 @@ def enter():
     game_world.add_object(Inventory, 0)
     game_world.add_object(boy, 1)
     game_world.add_object(boy1, 1)
-
     global Monster
 
 

@@ -183,7 +183,7 @@ next_state_table = {
     Attacked_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
                      ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState},
     Attack_State: {FIRE_ATTACK: Fire_Attacked_State, ICE_ATTACK: Ice_Attacked_State,
-                     ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState}
+                   ARROW_ATTACK: Attacked_State, IDLE: RunState, ATTACK: RunState}
 }
 
 
@@ -196,7 +196,7 @@ class Slime:
             Slime.image = load_image('Monster1.png')
 
         self.HP = hp
-        self.start_HP = hp
+        self.start_HP = hp + 10
         self.move_type = type
         self.dir = 1
         self.velocity = 0

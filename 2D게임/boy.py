@@ -210,7 +210,6 @@ class Boy:
         self.cur_state.draw(self)
 
     def handle_event(self, event):
-
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
                 self.click_time = time.time() * 30
@@ -229,15 +228,6 @@ class Boy:
                         return
                     elif self.move_mouse_y >= 450 and self.move_mouse_y <= 500:
                         self.bullet_type = 'arrow'
-                        return
-                    elif self.move_mouse_y >= 400 and self.move_mouse_y <= 450:
-                        self.bullet_type = 'fire_arrow'
-                        return
-                    elif self.move_mouse_y >= 300 and self.move_mouse_y <= 350:
-                        self.bullet_type = 'fire_arrow'
-                        return
-                    elif self.move_mouse_y >= 250 and self.move_mouse_y <= 300:
-                        self.bullet_type = 'fire_arrow'
                         return
         if event.button == SDL_BUTTON_LEFT and event.type == SDL_MOUSEBUTTONUP:
             self.click_time = time.time() * 30 - self.click_time
