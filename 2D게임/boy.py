@@ -8,7 +8,7 @@ import math
 
 # Boy Event
 
-RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP, TMP = range(5)
+RIGHT_BUTTON_DOWN, LEFT_BUTTON_DOWN, RIGHT_BUTTON_UP, LEFT_BUTTON_UP, TMP, FARMING = range(6)
 
 key_event_table = {
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): RIGHT_BUTTON_DOWN,
@@ -16,6 +16,7 @@ key_event_table = {
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): RIGHT_BUTTON_UP,
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT): LEFT_BUTTON_UP,
     (SDL_KEYDOWN, SDLK_SPACE): TMP,
+    (SDL_KEYDOWN, SDLK_ESCAPE): FARMING,
 }
 
 PIXEL_PER_METER = (10 / 0.33)  # 30pixel -> 100cm
@@ -26,6 +27,11 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # 화살 속도 초당 20m
 ARROW_SPEED_PPS = (20 * PIXEL_PER_METER)
 
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+
+FRAMES_PER_ACTION = 3
 # Boy States
 
 class IdleState:
@@ -86,15 +92,15 @@ class RunState:
         boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
         boy.tile_x, boy.tile_y = int(boy.x) // 20 + 1, int(boy.y) // 20 + 1
         if boy.Map[boy.tile_y][boy.tile_x] == 115 or boy.Map[boy.tile_y][boy.tile_x] == 114 or \
-                boy.Map[boy.tile_y][boy.tile_x] == 109 or boy.Map[boy.tile_y][boy.tile_x] == 110 \
-                or boy.t >= boy.total_moveRatio:
+                boy.Map[boy.tile_y][boy.tile_x] == 109 or boy.Map[boy.tile_y][boy.tile_x] == 110:
+
             boy.t -= game_framework.frame_time
             a = boy.t / boy.total_moveRatio
             boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
             boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
-            boy.add_event(TMP)
+            boy.add_event(FARMING)
             return
-        elif boy.Map[boy.tile_y][boy.tile_x] == 31:
+        elif boy.Map[boy.tile_y][boy.tile_x] == 31 or boy.t >= boy.total_moveRatio:
             boy.t -= game_framework.frame_time
             a = boy.t / boy.total_moveRatio
             boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
@@ -107,27 +113,35 @@ class RunState:
         boy.image.rotate_draw(boy.degreeAT + 3.14, boy.x, boy.y)
 
 
-
-
-class SleepState:
-    # fill here
+class farming_state:
     @staticmethod
     def enter(boy, event):
-        boy.frame = 0
+        boy.t = 0
+        boy.start_x, boy.start_y = boy.x, boy.y
+        pass
 
     @staticmethod
     def exit(boy, event):
-
+        # fill here
         pass
 
     @staticmethod
     def do(boy):
-        boy.frame = (boy.frame + 1) % 8
+        boy.degreeAT = 3.141592
+        boy.frame = boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+        if boy.frame >= 3:
+            boy.inventory.item['arrow'] += 1
+            boy.inventory.item['fire_arrow'] = int(boy.inventory.item['arrow'] / 10)
+            boy.inventory.item['ice_arrow'] = int(boy.inventory.item['arrow'] / 10)
+            boy.frame = 0
 
     @staticmethod
     def draw(boy):
-        boy.image.rotate_draw(boy.degreeAT + 3.14, boy.x, boy.y)
-    pass
+        boy.Farming_image.clip_composite_draw(int(boy.frame) * 30, 0, 30, 30, boy.degreeAT, '', boy.x, boy.y, 30, 30)
+
+
+
+
 
 
 
@@ -137,25 +151,23 @@ next_state_table = {
 
     IdleState: {RIGHT_BUTTON_UP: RunState, LEFT_BUTTON_UP: IdleState,
                 RIGHT_BUTTON_DOWN: RunState, LEFT_BUTTON_DOWN: IdleState,
-                TMP: IdleState},
+                FARMING: farming_state, TMP: IdleState},
 
     RunState: {RIGHT_BUTTON_UP: RunState, RIGHT_BUTTON_DOWN: RunState,
                LEFT_BUTTON_DOWN: IdleState, LEFT_BUTTON_UP: IdleState,
-               TMP: IdleState},
+               FARMING: farming_state, TMP: IdleState},
 
-    SleepState: {LEFT_BUTTON_DOWN: RunState, RIGHT_BUTTON_DOWN: RunState,
-                 LEFT_BUTTON_UP: RunState, RIGHT_BUTTON_UP: RunState,
-                 TMP: IdleState}
-                }
-
-
+    farming_state: {RIGHT_BUTTON_UP: RunState, RIGHT_BUTTON_DOWN: RunState,
+                    LEFT_BUTTON_DOWN: IdleState, LEFT_BUTTON_UP: IdleState,
+                    TMP: RunState, FARMING: RunState}
+    }
 
 
 class Boy:
-
     def __init__(self):
         self.x, self.y = 1000 // 2, 300
         self.image = load_image('actor\\actorTop1.png')
+        self.Farming_image = load_image('actor\\actorW.png')
         self.Map = None
         self.inventory = None
         self.velocity = 0
@@ -182,7 +194,6 @@ class Boy:
 
     def fire_ball(self, data, speed):
         if time.time() - self.shoot_timer > 0.3 and self.inventory.pop(data):
-
             self.shoot_timer = time.time()
             ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT, data)
             game_world.add_object(ball, 2)

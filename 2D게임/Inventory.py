@@ -9,16 +9,20 @@ class inventory:
     def __init__(self):
         self.image = load_image('ui\\inventory.png')
         self.font = load_font('font\\godoMaum.ttf', 50)
-        self.item = {'fire_arrow': 255, 'ice_arrow': 100, 'arrow': 100}
+        self.item = {'fire_arrow': 0, 'ice_arrow': 0, 'arrow': 0}
 
     def insert(self, data):
         self.item[data] += 1
 
     def pop(self, data):
+        if data != 'arrow':
+            self.item['arrow'] -= 10
         if self.item[data] > 0:
-            self.item[data] -= 1
+            self.item['ice_arrow'] -= 1
+            self.item['fire_arrow'] -= 1
             return True
         else:
+            self.item['arrow'] += 10
             return False
 
     def update(self):
