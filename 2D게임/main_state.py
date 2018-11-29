@@ -31,6 +31,9 @@ Monster_Spawn_time = 0
 
 SlimeHp = 10
 
+def output_grass():
+    return grass
+
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()

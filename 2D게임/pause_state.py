@@ -1,10 +1,12 @@
 import game_framework
+import game_world
 from pico2d import *
 import title_state
 import main_state
 name = "PauseState"
 image = None
 logo_time = 10
+
 
 
 def enter():
@@ -50,8 +52,11 @@ def handle_events():
             game_framework.quit()
         else:
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
-                game_framework.pop_state()
+                tmp = main_state.output_grass()
+                if tmp.castle_hp >= 0:
+                    game_framework.pop_state()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_r):
+                game_world.clear()
                 game_framework.change_state(main_state)
 
 
