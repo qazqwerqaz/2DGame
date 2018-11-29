@@ -6,6 +6,7 @@ import time
 from pico2d import *
 import game_framework
 import game_world
+import pause_state
 
 from boy import Boy
 from grass import Grass
@@ -26,7 +27,7 @@ bullet = None
 Boy_ID = 0
 Monster_Spawn_time = 0
 
-SlimeHp = 100
+SlimeHp = 10
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -97,6 +98,8 @@ def handle_events():
                 Boy_ID = 1
             elif event.key == SDLK_2:
                 Boy_ID = 0
+            elif event.key == SDLK_p:
+                game_framework.push_state(pause_state)
         else:
             if Boy_ID == 0:
                 boy.handle_event(event)
@@ -111,10 +114,12 @@ def update():
     Monster_Spawn_time += game_framework.frame_time
     if Monster_Spawn_time >= 2:
         global monsters, SlimeHp
-        SlimeHp += 1
-        monsters = [Slime(SlimeHp, random.randint(0, 3), grass) for i in range(10)]
+        SlimeHp += 5
+        clamp(0,SlimeHp,1000)
+        monsters = [Slime(SlimeHp, random.randint(0, 3), grass) for i in range(int(SlimeHp / 10))]
         game_world.add_objects(monsters, 3)
         Monster_Spawn_time = 0
+        print(int(SlimeHp / 10))
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -130,7 +135,7 @@ def update():
                     for monster in monster_corps:
                         if In_Collide_Range(bullet, monster):
                             monster.In_Collide_Range = True
-                            if bullet.data != 'fire_arrow' or bullet.data != 'ice_arrow':
+                            if bullet.data != 'fire_arrow' and bullet.data != 'ice_arrow':
                                 bullet.data = 'arrow'
                             monster.Attacked(bullet.data, bullet.move_x, bullet.move_y)
                             bullet.explosion = True

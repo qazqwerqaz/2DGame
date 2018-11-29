@@ -35,10 +35,8 @@ class RunState:
         if Slime.HP <= 0:
             game_world.remove_object(Slime)
 
-
     @staticmethod
     def exit(Slime):
-
         pass
 
     @staticmethod
@@ -55,7 +53,7 @@ class RunState:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP)
+        Slime.image.opacify(clamp(0.5,Slime.HP/Slime.start_HP,1))
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
 
 
@@ -63,15 +61,17 @@ class Attack_State:
 
     @staticmethod
     def enter(Slime):
-
+        Slime.timer = 0
         pass
 
     @staticmethod
     def exit(Slime):
+        Slime.timer = 0
         pass
 
     @staticmethod
     def do(Slime):
+        Slime.timer += game_framework.frame_time
         if Slime.charge:
             Slime.x += (RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time)*2
         else:
@@ -79,14 +79,15 @@ class Attack_State:
         if Slime.x >= 420:
             Slime.charge = False
         if Slime.x <= 380:
-            Slime.castle.attacked()
             Slime.charge = True
-
+        if Slime.timer >= 1:
+            Slime.castle.attacked()
+            Slime.timer = 0
         pass
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP + 0.2)
+        Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -114,7 +115,7 @@ class Fire_Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP+ 0.2)
+        Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -140,7 +141,7 @@ class Ice_Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP+ 0.2)
+        Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
         Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
         pass
 
@@ -169,7 +170,7 @@ class Attacked_State:
 
     @staticmethod
     def draw(Slime):
-        Slime.image.opacify(Slime.HP/Slime.start_HP + 0.2)
+        Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
         Slime.image.rotate_draw(0, Slime.x, Slime.y)
         pass
 
@@ -221,7 +222,8 @@ class Slime:
         self.dir_timer -= game_framework.frame_time
         if self.dir_timer < 0:
             self.dir_timer += 1.0
-            self.dir = random.random() * 2 * math.pi
+            self.dir = random.randint(-90 , 90) * math.pi / 180
+            print(self.dir)
         return BehaviorTree.SUCCESS
 
     def find_player(self):
@@ -258,7 +260,7 @@ class Slime:
 
     def update(self):
         if self.x < 0 or self.x > 1600 - 25 or self.y >= 600 or self.y <= 0:
-            game_world.remove_object(Slime)
+            game_world.remove_object(self)
         self.bt.run()
         self.cur_state.do(self)
         if len(self.event_que) > 0:

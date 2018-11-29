@@ -100,7 +100,8 @@ class RunState:
             boy.y = (1 - a) * boy.start_y + a * boy.move_mouse_y
             boy.add_event(FARMING)
             return
-        elif boy.Map[boy.tile_y][boy.tile_x] == 31 or boy.t >= boy.total_moveRatio:
+        elif boy.Map[boy.tile_y][boy.tile_x] == 31 or boy.t >= boy.total_moveRatio\
+                or boy.Map[boy.tile_y][boy.tile_x] == 100 or boy.Map[boy.tile_y][boy.tile_x] == 125:
             boy.t -= game_framework.frame_time
             a = boy.t / boy.total_moveRatio
             boy.x = (1 - a) * boy.start_x + a * boy.move_mouse_x
@@ -127,9 +128,13 @@ class farming_state:
 
     @staticmethod
     def do(boy):
+        global ACTION_PER_TIME
         boy.degreeAT = 3.141592
         boy.frame = boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
         if boy.frame >= 3:
+            ACTION_PER_TIME += 0.05
+            if ACTION_PER_TIME >= 100:
+               ACTION_PER_TIME = 100
             boy.inventory.item['arrow'] += 1
             boy.inventory.item['fire_arrow'] = int(boy.inventory.item['arrow'] / 10)
             boy.inventory.item['ice_arrow'] = int(boy.inventory.item['arrow'] / 10)
