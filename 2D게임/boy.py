@@ -139,6 +139,8 @@ class farming_state:
             boy.inventory.item['fire_arrow'] = int(boy.inventory.item['arrow'] / 10)
             boy.inventory.item['ice_arrow'] = int(boy.inventory.item['arrow'] / 10)
             boy.inventory.item['sector_form_arrow'] = int(boy.inventory.item['arrow'] / 10)
+            boy.inventory.item['sector_form_fire_arrow'] = int(boy.inventory.item['arrow'] / 30)
+            boy.inventory.item['sector_form_ice_arrow'] = int(boy.inventory.item['arrow'] / 30)
             boy.frame = 0
 
     @staticmethod
@@ -194,9 +196,10 @@ class Boy:
     def fire_ball(self, data, speed):
         if time.time() - self.shoot_timer > 0.3 and self.inventory.pop(data):
             self.shoot_timer = time.time()
-            if data == 'sector_form_arrow':
+            if data == 'sector_form_arrow' or data == 'sector_form_fire_arrow' or data == 'sector_form_ice_arrow':
                 for i in range(0, 10):
-                    ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT - 3.141592 / 4 + 3.141592 / 20 * i, data)
+                    ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT
+                                  - 3.141592 / 4 + 3.141592 / 20 * i, data)
                     game_world.add_object(ball, 2)
             else:
                 ball = Bullet(self.x, self.y, ARROW_SPEED_PPS + speed * PIXEL_PER_METER, self.degreeAT, data)
@@ -246,6 +249,12 @@ class Boy:
                         return
                     elif self.move_mouse_y >= 400 and self.move_mouse_y <= 450:
                         self.bullet_type = 'sector_form_arrow'
+                        return
+                    elif self.move_mouse_y >= 350 and self.move_mouse_y <= 400:
+                        self.bullet_type = 'sector_form_fire_arrow'
+                        return
+                    elif self.move_mouse_y >= 300 and self.move_mouse_y <= 350:
+                        self.bullet_type = 'sector_form_ice_arrow'
                         return
         if event.button == SDL_BUTTON_LEFT and event.type == SDL_MOUSEBUTTONUP:
             self.click_time = time.time() * 30 - self.click_time

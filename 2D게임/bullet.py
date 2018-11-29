@@ -54,19 +54,19 @@ class Bullet:
 
     def draw(self):
         if not self.explosion:
-            if self.data == 'fire_arrow':
+            if self.data == 'fire_arrow' or self.data == 'sector_form_fire_arrow':
                 self.fire_arrow_image.clip_composite_draw(int(self.frame) * 90, 0, 90, 30, self.degreeAT, '',self.x, self.y, 90, 30)
-            elif self.data == 'ice_arrow':
+            elif self.data == 'ice_arrow'or self.data == 'sector_form_ice_arrow':
                 self.ice_arrow_image.clip_composite_draw(int(self.frame) * 90, 0, 90, 30, self.degreeAT, '',self.x, self.y, 90, 30)
             elif self.data == 'arrow':
                 self.arrow_image.rotate_draw(self.degreeAT + 3.141592, self.x, self.y)
             elif self.data == 'sector_form_arrow':
                 self.arrow_image.rotate_draw(self.degreeAT + 3.141592, self.x, self.y)
         else:
-            if self.data == 'fire_arrow':
+            if self.data == 'fire_arrow' or self.data == 'sector_form_fire_arrow':
                 self.fire_explosion_image.clip_composite_draw(int(self.effect_frame) * 70, 0, 70, 70,
                                                               self.degreeAT, '', self.x, self.y, 70, 70)
-            elif self.data == 'ice_arrow':
+            elif self.data == 'ice_arrow'or self.data == 'sector_form_ice_arrow':
                 self.ice_explosion_image.clip_composite_draw(int(self.effect_frame) * 45, 0, 45, 30,
                                                              self.degreeAT, '', self.x, self.y, 70, 70)
             elif self.data == 'arrow':

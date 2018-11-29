@@ -47,14 +47,12 @@ class RunState:
         if Slime.x >= 420:
             Slime.x -= RUN_SPEED_PPS * math.cos(Slime.dir) * game_framework.frame_time
             Slime.add_event(ATTACK)
-
-
         pass
 
     @staticmethod
     def draw(Slime):
         Slime.image.opacify(clamp(0.5,Slime.HP/Slime.start_HP,1))
-        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y, 30*Slime.size, 30*Slime.size)
 
 
 class Attack_State:
@@ -88,7 +86,8 @@ class Attack_State:
     @staticmethod
     def draw(Slime):
         Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
-        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y, 30*Slime.size, 30*Slime.size)
+
         pass
 
 
@@ -116,8 +115,8 @@ class Fire_Attacked_State:
     @staticmethod
     def draw(Slime):
         Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
-        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
-        pass
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y, 30*Slime.size, 30*Slime.size)
+
 
 
 class Ice_Attacked_State:
@@ -142,8 +141,8 @@ class Ice_Attacked_State:
     @staticmethod
     def draw(Slime):
         Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
-        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y)
-        pass
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y, 30*Slime.size, 30*Slime.size)
+
 
 
 class Attacked_State:
@@ -171,8 +170,8 @@ class Attacked_State:
     @staticmethod
     def draw(Slime):
         Slime.image.opacify(clamp(0.5, Slime.HP / Slime.start_HP, 1))
-        Slime.image.rotate_draw(0, Slime.x, Slime.y)
-        pass
+        Slime.image.rotate_draw(Slime.dir, Slime.x, Slime.y, 30*Slime.size, 30*Slime.size)
+
 
 
 next_state_table = {
@@ -192,7 +191,7 @@ next_state_table = {
 class Slime:
 
     image = None
-    def __init__(self, hp, type,castle):
+    def __init__(self, hp, type, castle, size):
         self.x, self.y = 0, random.randint(0, 600)
         if Slime.image == None:
             Slime.image = load_image('Monster1.png')
@@ -212,6 +211,13 @@ class Slime:
         self.damage = 0
         self.charge = False
         self.In_Collide_Range = False
+
+        if size >= 100:
+            self.size = 3
+            self.HP = hp * 10
+            self.start_HP = hp * 10
+        else:
+            self.size = 1
         self.build_behavior_tree()
         self.event_que = []
         self.cur_state = RunState

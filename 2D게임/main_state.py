@@ -13,6 +13,7 @@ from grass import Grass
 from Inventory import inventory
 from Monster import Slime
 from bullet import Bullet
+from Score import game_Score
 name = "MainState"
 
 boy = None
@@ -23,6 +24,7 @@ monsters = None
 
 bullet = None
 
+score = None
 
 Boy_ID = 0
 Monster_Spawn_time = 0
@@ -53,10 +55,12 @@ def In_Collide_Range(a, b):
 
 def enter():
     get_time()
-    global boy, boy1, grass, Inventory, bullet
+    global boy, boy1, grass, Inventory, bullet, score
     bullet = Bullet()
     boy = Boy()
     boy1 = Boy()
+
+    score = game_Score()
 
     Inventory = inventory()
     grass = Grass()
@@ -65,6 +69,7 @@ def enter():
     boy.Get_inven(Inventory)
     boy1.Get_inven(Inventory)
     game_world.add_object(grass, 0)
+    game_world.add_object(score, 0)
     game_world.add_object(Inventory, 0)
     game_world.add_object(boy, 1)
     game_world.add_object(boy1, 1)
@@ -87,7 +92,6 @@ def handle_events():
     global Boy_ID
     events = get_events()
 
-
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
@@ -109,14 +113,20 @@ def handle_events():
 
 
 def update():
-    global Monster_Spawn_time
+    global Monster_Spawn_time, grass
+
+    if grass.castle_hp <= 0:
+        game_world.clear()
+        game_framework.change_state(pause_state)
 
     Monster_Spawn_time += game_framework.frame_time
     if Monster_Spawn_time >= 2:
         global monsters, SlimeHp
         SlimeHp += 5
         clamp(0,SlimeHp,1000)
-        monsters = [Slime(SlimeHp, random.randint(0, 3), grass) for i in range(int(SlimeHp / 10))]
+        monsters = [Slime(SlimeHp, random.randint(0, 3),
+                          grass, random.randint(int(SlimeHp / 10),
+                                                clamp(0, int(SlimeHp), 130))) for i in range(int(SlimeHp / 10))]
         game_world.add_objects(monsters, 3)
         Monster_Spawn_time = 0
         print(int(SlimeHp / 10))
@@ -128,16 +138,21 @@ def update():
     monster_corps = game_world.Return_layer3_obj()
 
     if len(bullets) != 0:
-
+        global score
         for monster in monster_corps:
             for bullet in bullets:
                 if collide(bullet, monster):
                     for monster in monster_corps:
                         if In_Collide_Range(bullet, monster):
                             monster.In_Collide_Range = True
-                            if bullet.data != 'fire_arrow' and bullet.data != 'ice_arrow':
+                            if bullet.data == 'arrow' or bullet.data == 'sector_form_arrow':
                                 bullet.data = 'arrow'
+                            elif bullet.data == 'fire_arrow' or bullet.data == 'sector_form_fire_arrow':
+                                bullet.data = 'fire_arrow'
+                            elif bullet.data == 'ice_arrow' or bullet.data == 'sector_form_ice_arrow':
+                                bullet.data = 'ice_arrow'
                             monster.Attacked(bullet.data, bullet.move_x, bullet.move_y)
+                            score.total_Score += 1
                             bullet.explosion = True
 
 
