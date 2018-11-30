@@ -19,6 +19,15 @@ class Bullet:
     fire_explosion_image = None
     ice_explosion_image = None
 
+    fire_explosion_sound = None
+    ice_explosion_sound = None
+    arrow_explosion_sound = None
+
+    fire_shoot_sound = None
+    ice_shoot_sound = None
+    arrow_shoot_sound = None
+
+
     def __init__(self, x = 400, y = 300, velocity = 1, degreeAT = 1, data = 1):
         if Bullet.arrow_image == None:
             Bullet.arrow_image = load_image('arrow\\arrow.png')
@@ -26,6 +35,27 @@ class Bullet:
             Bullet.fire_arrow_image = load_image('arrow\\fire_arrow.png')
         if Bullet.ice_arrow_image == None:
             Bullet.ice_arrow_image = load_image('arrow\\ice_arrow.png')
+
+        if Bullet.fire_explosion_sound == None:
+            Bullet.fire_explosion_sound = load_music('Music\\불화살타격.wav')
+        if Bullet.ice_explosion_sound == None:
+            Bullet.ice_explosion_sound = load_music('Music\\얼음화살타격.wav')
+        if Bullet.arrow_explosion_sound == None:
+            Bullet.arrow_explosion_sound = load_music('Music\\화살타격음.wav')
+
+        if Bullet.fire_shoot_sound == None:
+            Bullet.fire_shoot_sound = load_music('Music\\불화살.wav')
+        if Bullet.ice_shoot_sound == None:
+            Bullet.ice_shoot_sound = load_music('Music\\얼음화살.wav')
+        if Bullet.arrow_shoot_sound == None:
+            Bullet.arrow_shoot_sound = load_music('Music\\화살소리.wav')
+
+        self.fire_explosion_sound.set_volume(256)
+        self.ice_explosion_sound.set_volume(256)
+        self.arrow_explosion_sound.set_volume(32)
+        self.fire_shoot_sound.set_volume(256)
+        self.ice_shoot_sound.set_volume(256)
+        self.arrow_shoot_sound.set_volume(32)
 
 
         if Bullet.fire_explosion_image == None:
@@ -36,6 +66,13 @@ class Bullet:
         self.move_x, self.move_y = self.velocity * math.cos(self.degreeAT+3.141592), self.velocity * math.sin(self.degreeAT+3.141592)
         self.move_per_pixel_x, self.move_per_pixel_y = math.cos(self.degreeAT+3.141592),  math.sin(self.degreeAT+3.141592)
         self.data = data
+
+        if self.data == 'fire_arrow' or self.data == 'sector_form_fire_arrow':
+            self.fire_shoot_sound.play()
+        elif self.data == 'ice_arrow' or self.data == 'sector_form_ice_arrow':
+            self.ice_shoot_sound.play()
+        elif self.data == 'arrow' or self.data == 'sector_form_arrow':
+            self.arrow_shoot_sound.play()
         self.frame = 0
         self.effect_frame = 0
         self.timer = 0
@@ -99,8 +136,14 @@ class Bullet:
             elif self.move_per_pixel_x < 0 and self.move_x > 0:
                 game_world.remove_object(self)
         else:
-            if self.data == 'arrow':
+            if self.data == 'arrow' or self.data == 'sector_form_arrow':
+                Bullet.arrow_explosion_sound.play()
                 game_world.remove_object(self)
+            if self.effect_frame == 0:
+                if self.data == 'ice_arrow' or self.data == 'sector_form_ice_arrow':
+                    self.ice_explosion_sound.play()
+                elif self.data == 'fire_arrow' or self.data == 'sector_form_fire_arrow':
+                    self.fire_explosion_sound.play()
             self.effect_frame = (self.effect_frame+EFFECT_FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
             if int(self.effect_frame) >= 6:
                 game_world.remove_object(self)

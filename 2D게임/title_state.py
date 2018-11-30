@@ -4,18 +4,23 @@ import main_state
 
 name = "TitleState"
 image = None
+back_music = None
 mouse_x = 0
 mouse_y = 0
 
 def enter():
-    global image
+    global image, back_music
     image = load_image('ui\\title.png')
+    back_music = load_music('Music\\football.mp3')
+    back_music.set_volume(128)
+    back_music.repeat_play()
     pass
 
 
 def exit():
-    global image
+    global image, back_music
     del(image)
+    del(back_music)
     pass
 
 
@@ -48,6 +53,8 @@ def draw():
 
 
 def update():
+    global back_music
+
     global image
     if (mouse_x > 500 and mouse_x > 600 and mouse_y > 250 and mouse_y < 400):
         image = load_image('ui\\title_start.png')
