@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="023a8950-661e-4081-817b-11f9f984b38a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/2D게임/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/bullet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D게임/title_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/2D게임/title_state.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,7 +17,7 @@
     <session id="111862500">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="34" />
+          <entry key="project.closed" value="35" />
           <entry key="project.open.time.0" value="7" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
@@ -51,14 +49,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="11231" />
+          <entry key="py" value="11440" />
           <entry key="txt" value="28" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="28" />
-          <entry key="Python" value="11231" />
+          <entry key="Python" value="11440" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -154,11 +152,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/2D게임/bullet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="139" column="51" lean-forward="true" selection-start-line="139" selection-start-column="51" selection-end-line="139" selection-end-column="51" />
+            <state relative-caret-position="285">
+              <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
-                <marker date="1543575183899" expanded="true" signature="3445:3451" ph="..." />
+                <marker date="1543576446809" expanded="true" signature="319:1326" ph="..." />
+                <marker date="1543576446809" expanded="true" signature="4039:4045" ph="..." />
               </folding>
             </state>
           </provider>
@@ -210,7 +209,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="401" />
     <option name="y" value="197" />
     <option name="width" value="974" />
@@ -241,7 +240,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="D:/python/2DGP/2018-2DGP/Labs/Lecture16" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/Python---2DGP" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -322,7 +321,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09220232" />
@@ -330,7 +329,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3159609" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3159609" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39522257" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -517,11 +516,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/2D게임/bullet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="139" column="51" lean-forward="true" selection-start-line="139" selection-start-column="51" selection-end-line="139" selection-end-column="51" />
+        <state relative-caret-position="285">
+          <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <marker date="1543575183899" expanded="true" signature="3445:3451" ph="..." />
+            <marker date="1543576446809" expanded="true" signature="319:1326" ph="..." />
+            <marker date="1543576446809" expanded="true" signature="4039:4045" ph="..." />
           </folding>
         </state>
       </provider>
