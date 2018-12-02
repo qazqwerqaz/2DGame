@@ -10,7 +10,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 5
 EFFECT_FRAMES_PER_ACTION = 6
 
-<<<<<<< HEAD:bullet.py
+
 class explosion_sound:
     fire_explosion_sound = None
     ice_explosion_sound = None
@@ -38,8 +38,7 @@ class explosion_sound:
         elif data == 'fire_arrow' or data == 'sector_form_fire_arrow':
             self.fire_explosion_sound.play()
 
-=======
->>>>>>> parent of a770461... h:2D게임/bullet.py
+
 class Bullet:
 
     arrow_image = None
@@ -67,14 +66,13 @@ class Bullet:
             Bullet.ice_arrow_image = load_image('arrow\\ice_arrow.png')
 
         if Bullet.fire_explosion_sound == None:
-            Bullet.fire_explosion_sound = load_music('Music\\불화살타격.wav')
+            Bullet.fire_explosion_sound = load_wav('Music\\불화살타격.wav')
         if Bullet.ice_explosion_sound == None:
-            Bullet.ice_explosion_sound = load_music('Music\\얼음화살타격.wav')
+            Bullet.ice_explosion_sound = load_wav('Music\\얼음화살타격.wav')
         if Bullet.arrow_explosion_sound == None:
-            Bullet.arrow_explosion_sound = load_music('Music\\화살타격음.wav')
+            Bullet.arrow_explosion_sound = load_wav('Music\\화살타격음.wav')
 
         if Bullet.fire_shoot_sound == None:
-<<<<<<< HEAD:bullet.py
             Bullet.fire_shoot_sound = load_wav('Music\\불화살.wav')
             Bullet.fire_shoot_sound.set_volume(256)
         if Bullet.ice_shoot_sound == None:
@@ -84,16 +82,7 @@ class Bullet:
             Bullet.arrow_shoot_sound = load_wav('Music\\화살소리.wav')
             Bullet.arrow_shoot_sound.set_volume(32)
 
-        self.play_explosion_sound = explosion_sound();
-
-
-=======
-            Bullet.fire_shoot_sound = load_music('Music\\불화살.wav')
-        if Bullet.ice_shoot_sound == None:
-            Bullet.ice_shoot_sound = load_music('Music\\얼음화살.wav')
-        if Bullet.arrow_shoot_sound == None:
-            Bullet.arrow_shoot_sound = load_music('Music\\화살소리.wav')
->>>>>>> parent of a770461... h:2D게임/bullet.py
+        self.play_explosion_sound = explosion_sound()
 
         self.fire_explosion_sound.set_volume(256)
         self.ice_explosion_sound.set_volume(256)
