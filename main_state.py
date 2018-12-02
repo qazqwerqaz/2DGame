@@ -31,6 +31,8 @@ Monster_Spawn_time = 0
 
 SlimeHp = 10
 
+back_music = None
+
 def output_grass():
     return grass
 
@@ -57,6 +59,11 @@ def In_Collide_Range(a, b):
     return True
 
 def enter():
+    global back_music
+    image = load_image('ui\\title.png')
+    back_music = load_music('Music\\ingame_Bgm.mp3')
+    back_music.set_volume(64)
+    back_music.repeat_play()
     get_time()
     global boy, boy1, grass, Inventory, bullet, score
     bullet = Bullet()

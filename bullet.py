@@ -16,13 +16,13 @@ class explosion_sound:
     arrow_explosion_sound = None
     def __init__(self):
         if explosion_sound.fire_explosion_sound == None:
-            explosion_sound.fire_explosion_sound = load_music('Music\\불화살타격.wav')
+            explosion_sound.fire_explosion_sound = load_wav('Music\\불화살타격.wav')
             explosion_sound.fire_explosion_sound.set_volume(256)
         if explosion_sound.ice_explosion_sound == None:
-            explosion_sound.ice_explosion_sound = load_music('Music\\얼음화살타격.wav')
+            explosion_sound.ice_explosion_sound = load_wav('Music\\얼음화살타격.wav')
             explosion_sound.ice_explosion_sound.set_volume(256)
         if explosion_sound.arrow_explosion_sound == None:
-            explosion_sound.arrow_explosion_sound = load_music('Music\\화살타격음.wav')
+            explosion_sound.arrow_explosion_sound = load_wav('Music\\화살타격음.wav')
             explosion_sound.arrow_explosion_sound.set_volume(32)
 
 
@@ -64,13 +64,13 @@ class Bullet:
 
 
         if Bullet.fire_shoot_sound == None:
-            Bullet.fire_shoot_sound = load_music('Music\\불화살.wav')
+            Bullet.fire_shoot_sound = load_wav('Music\\불화살.wav')
             Bullet.fire_shoot_sound.set_volume(256)
         if Bullet.ice_shoot_sound == None:
-            Bullet.ice_shoot_sound = load_music('Music\\얼음화살.wav')
+            Bullet.ice_shoot_sound = load_wav('Music\\얼음화살.wav')
             Bullet.ice_shoot_sound.set_volume(256)
         if Bullet.arrow_shoot_sound == None:
-            Bullet.arrow_shoot_sound = load_music('Music\\화살소리.wav')
+            Bullet.arrow_shoot_sound = load_wav('Music\\화살소리.wav')
             Bullet.arrow_shoot_sound.set_volume(32)
 
         self.play_explosion_sound = explosion_sound();

@@ -26,6 +26,7 @@ class Grass:
         self.castle_hp_image = load_image('ui\\castle_hp.png')
         self.castle_hp = 300
         self.hp_frame = 0
+
         with open('Map.txt', 'r') as self.file:
             self.line = np.loadtxt('Map.txt', delimiter=' ')
 
